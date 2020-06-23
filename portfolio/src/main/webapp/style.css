@@ -4,24 +4,20 @@
   width: 650px;
 }
 
-#greeting-container {
-  margin-top: 20px;
-}
-
-h1 {
+h1, h2 {
   display: flex;
   justify-content: center;
 }
 
 .icon-row {
-  width: 100%;
-  text-align: center;
   overflow: auto;
+  text-align: center;
+  width: 100%;
 }
 
 .image-container {
-  display: flex;
   flex-wrap: wrap;
+  display: flex;
   justify-content: center;
 }
 
@@ -31,10 +27,10 @@ h1 {
 }
 
 .single-container {
-  position: relative;
   margin: 10px;
   max-height: 200px;
   max-width: 200px;
+  position: relative;
 }
 
 .single-container:hover .img-block {
@@ -42,26 +38,40 @@ h1 {
 }
 
 .img-block {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 20%;
-  width: 100%;
-  opacity: 0;
-  transition: .5s ease;
   background-color: blue;
+  bottom: 0;
+  height: 20%;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: .5s ease;
+  width: 100%;
 }
 
 .img-caption {
-  color: white;
-  font-size: 9px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 9px;
+  left: 50%;
+  position: absolute;
   text-align: center;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.proj-container {
+  position: relative;
+}
+
+.slide {
+  display: none;
+}
+
+.slide img {
+  position: relative;
+  max-height: 200px;
+  max-width: 200px;
 }
