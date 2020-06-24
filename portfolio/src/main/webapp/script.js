@@ -12,17 +12,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * Adds a random greeting to the page.
+var curSlide = 0; //by default, display first slide
+const totalSlides = 3; //total number of slides
+
+/*
+ * Advance forward by one slide
  */
-function addRandomGreeting() {
-  const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
+function forward() {
+  if (curSlide < totalSlides - 1) {
+    updateSlide(curSlide + 1);
+  } else { //curSlide = totalSlides
+    updateSlide(0);
+  }
+}
 
-  // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+/*
+ * Advance backwards by one slide
+ */
+function back() {
+  if (curSlide == 0) {
+    updateSlide(totalSlides - 1);
+  } else {
+    updateSlide(curSlide - 1);
+  }
+}
 
-  // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
+function updateSlide(slide) {
+  curSlide = slide;
+  var slideArr = document.getElementsByClassName("slide");
+  var defaultSlide = document.getElementsByClassName("default-slide");
+  defaultSlide[0].style.display = "none";
+  for (var i = 0; i < slideArr.length; i++) {
+    if (i != curSlide) {
+      slideArr[i].style.display = "none";
+    } else {
+      slideArr[i].style.display = "block";
+    }
+  }
 }

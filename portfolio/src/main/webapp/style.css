@@ -1,26 +1,91 @@
-#content {
-  margin-left: auto;
-  margin-right: auto;
-  width: 650px;
+.content {
+  background-color: #E1f0C4;
+  border: 2px solid #79BEEE;
+  border-radius: 5px;
+}
+
+#intro-box {
+  background-color: #79BEEE;
+}
+
+#currently-box {
+  background-color: #B47Eb3;
+}
+
+#intro-box, #currently-box {
+  border-radius: 10%;
+  left: 35%;
+  margin-top: 20px;
+  padding: 10px;
+  position: relative;
+  width: 30%;
 }
 
 #pf-image {
+  border-radius: 50%;
   display: block;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 10px;
+  max-height: 200px;
+  max-width: 200px;
+  text-align: center;
   width: 50%;
 }
 
 h1, h2 {
+  color: #413C58;
   display: flex;
+  font-family: 'Raleway', sans-serif;
   justify-content: center;
   text-transform: uppercase;
+}
+
+p, ul {
+  color: white;
+  font-family: Garamond;
+  font-size: 14px;
 }
 
 .icon-row {
   overflow: auto;
   text-align: center;
   width: 100%;
+}
+
+.buttons-row {
+  position: relative;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  text-align: center;
+  width: 100%;
+}
+
+.button {
+  background-color: #E1f0C4;
+  border: 2px solid #413C58;
+  border-radius: 12px;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  padding: 16px 32px;
+  text-align: center;
+  transition-duration: 0.4s;
+}
+
+.button a:link, .button a:visited {
+  color: black;
+  text-decoration: none;
+}
+
+.button:hover {
+  background-color: #413C58;
+  color: white;
+}
+
+.button:hover a:link, .button:hover a:visited {
+  color: white;
 }
 
 .image-container {
@@ -39,7 +104,7 @@ h1, h2 {
   position: relative;
 }
 
-.slide-container:hover .img-block, .single-container:hover .img-block {
+#pf-container:hover #pf-block, .slide-container:hover .img-block, .single-container:hover .img-block {
   opacity: .70;
 }
 
@@ -69,6 +134,18 @@ h1, h2 {
 }
 
 .proj-container {
+  border-radius: 10%;
+  left: 35%;
+  margin-top: 20px;
+  padding: 10px;
+  position: relative;
+  width: 30%;
+}
+
+.proj-buttons {
+  margin-bottom: 20px;
+  margin-top: 20px;
+  left: 9%;
   position: relative;
 }
 
@@ -81,10 +158,15 @@ h1, h2 {
 }
 
 .default-slide-block {
-  background-color: blue;
-  color: white;
-  height: 400px;
-  width: 400px;
+  background-color: #FFE2FE;
+  color:#413C58;
+  font-family: Garamond;
+  font-size: 20px;
+  height: 300px;
+  margin: 4px 2px;
+  padding: 16px 32px;
+  text-align: center;
+  width: 300px;
 }
 
 .slide, .slide-container, .slide img {
