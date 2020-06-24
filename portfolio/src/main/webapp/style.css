@@ -16,8 +16,8 @@ h1, h2 {
 }
 
 .image-container {
-  flex-wrap: wrap;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
 }
 
@@ -68,10 +68,23 @@ h1, h2 {
 
 .slide {
   display: none;
+  max-height: 200px;
+  max-width: 200px;
+}
+
+.default-slide {
+  display: block;
+}
+
+.default-slide-block {
+  background-color: blue;
+  color: white;
+  width: 200px;
+  height: 200px;
 }
 
 .slide img {
-  position: relative;
   max-height: 200px;
   max-width: 200px;
+  position: relative;
 }
