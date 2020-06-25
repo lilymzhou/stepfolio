@@ -109,7 +109,7 @@ p, ul {
   position: relative;
 }
 
-#pf-container:hover #pf-block, .slide-container:hover .img-block, .single-container:hover .img-block {
+.slide-container:hover .img-block, .single-container:hover .img-block {
   opacity: .70;
 }
 
