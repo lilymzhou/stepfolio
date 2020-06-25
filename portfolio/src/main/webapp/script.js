@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-var curSlide = 0; //by default, display first slide
+const curSlide = 0; //By default, display first slide
 const totalSlides = 3; //total number of slides
 
 /*
