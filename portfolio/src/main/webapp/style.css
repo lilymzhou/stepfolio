@@ -13,12 +13,17 @@
 }
 
 #intro-box, #currently-box {
-  border-radius: 10%;
+  border-radius: 10px;
   left: 35%;
   margin-top: 20px;
   padding: 10px;
   position: relative;
   width: 30%;
+}
+
+#proj-container {
+  display: flex;
+  justify-content: center;
 }
 
 #pf-image {
@@ -109,7 +114,7 @@ p, ul {
 }
 
 .img-block {
-  background-color: blue;
+  background-color: #413C58;
   bottom: 0;
   height: 25%;
   left: 0;
@@ -125,7 +130,8 @@ p, ul {
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   color: white;
-  font-size: 9px;
+  font-family: Garamond;
+  font-size: 12px;
   left: 50%;
   position: absolute;
   text-align: center;
@@ -133,20 +139,11 @@ p, ul {
   transform: translate(-50%, -50%);
 }
 
-.proj-container {
-  border-radius: 10%;
-  left: 35%;
-  margin-top: 20px;
-  padding: 10px;
-  position: relative;
-  width: 30%;
-}
-
 .proj-buttons {
-  margin-bottom: 20px;
+  left: 15%;
   margin-top: 20px;
-  left: 9%;
   position: relative;
+  padding: 10px;
 }
 
 .slide {
