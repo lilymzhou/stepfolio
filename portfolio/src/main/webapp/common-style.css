@@ -49,13 +49,12 @@ p, ul {
   color: white;
 }
 
-.button:hover a:link, .button:hover a:visited {
+.button:hover a {
   color: white;
 }
 
 .img-block {
   background-color: #413C58;
-  bottom: 0;
   height: 25%;
   left: 0;
   opacity: 0;
