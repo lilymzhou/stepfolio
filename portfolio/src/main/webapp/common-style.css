@@ -19,9 +19,9 @@ p, ul {
 }
 
 .buttons-row {
-  position: relative;
   margin-bottom: 20px;
   margin-top: 20px;
+  position: relative;
   text-align: center;
   width: 100%;
 }
