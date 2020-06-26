@@ -16,9 +16,6 @@
 
 .default-slide {
   display: block;
-}
-
-.default-slide-block {
   background-color: #FFE2FE;
   color:#413C58;
   font-family: Garamond;
@@ -30,11 +27,11 @@
   width: 300px;
 }
 
-.slide-container:hover .img-block {
+.slide:hover .img-block {
   opacity: .70;
 }
 
-.slide, .slide-container, .slide img {
+.slide, .slide img {
   max-height: 400px;
   max-width: 400px;
   position: relative;
