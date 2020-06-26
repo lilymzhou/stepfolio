@@ -4,15 +4,15 @@
   border-radius: 5px;
 }
 
-#intro-box {
+.intro-box {
   background-color: #79BEEE;
 }
 
-#currently-box {
+.currently-box {
   background-color: #B47Eb3;
 }
 
-#intro-box, #currently-box {
+.intro-box, .currently-box {
   border-radius: 10px;
   left: 35%;
   margin-top: 20px;
@@ -26,7 +26,7 @@
   justify-content: center;
 }
 
-#pf-image {
+.pf-image {
   border-radius: 50%;
   display: block;
   margin-left: auto;
@@ -109,7 +109,7 @@ p, ul {
   position: relative;
 }
 
-#pf-container:hover #pf-block, .slide-container:hover .img-block, .single-container:hover .img-block {
+.slide-container:hover .img-block, .single-container:hover .img-block {
   opacity: .70;
 }
 
