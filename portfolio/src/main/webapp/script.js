@@ -12,37 +12,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-let curSlide = 0; //By default, display first slide
-const totalSlides = 3; //total number of slides
+let curSlide = 0; //By default, display first slide.
 
 /*
  * Advance forward by one slide
  */
 function forward() {
-  if (curSlide < totalSlides - 1) {
-    updateSlide(curSlide + 1);
-  } else { //curSlide = totalSlides
-    updateSlide(0);
-  }
+  updateSlide(curSlide + 1);
 }
 
 /*
  * Advance backwards by one slide
  */
 function back() {
-  if (curSlide == 0) {
-    updateSlide(totalSlides - 1);
-  } else {
-    updateSlide(curSlide - 1);
-  }
+  updateSlide(curSlide - 1);
 }
 
+/*
+ * Display slide, and hide all other slide elements.
+ */
 function updateSlide(slide) {
-  curSlide = slide;
   let slideArr = document.getElementsByClassName("slide");
+  let totalSlides = slideArr.length;
+
+  //Adjust curSlide  value
+  if (slide >= totalSlides) {
+    slide = 0;
+  } else if (slide < 0) {
+    slide = totalSlides - 1;
+  }
+  curSlide = slide;
+
   let defaultSlide = document.getElementsByClassName("default-slide");
   defaultSlide[0].style.display = "none";
-  for (let i = 0; i < slideArr.length; i++) {
+
+  for (let i = 0; i < totalSlides;i++) {
     if (i != curSlide) {
       slideArr[i].style.display = "none";
     } else {
