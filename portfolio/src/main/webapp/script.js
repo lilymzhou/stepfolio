@@ -15,14 +15,14 @@
 let curSlide = 0; //By default, display first slide.
 
 /*
- * Advance forward by one slide
+ * Advance forward by one slide.
  */
 function forward() {
   updateSlide(curSlide + 1);
 }
 
 /*
- * Advance backwards by one slide
+ * Advance backwards by one slide.
  */
 function back() {
   updateSlide(curSlide - 1);
@@ -35,7 +35,7 @@ function updateSlide(slide) {
   let slideArr = document.getElementsByClassName("slide");
   let totalSlides = slideArr.length;
 
-  //Adjust curSlide  value
+  //Adjust curSlide  value.
   if (slide >= totalSlides) {
     slide = 0;
   } else if (slide < 0) {
@@ -44,6 +44,7 @@ function updateSlide(slide) {
   curSlide = slide;
 
   let defaultSlide = document.getElementsByClassName("default-slide");
+  if (defaultSlide.length != 1) return;
   defaultSlide[0].style.display = "none";
 
   for (let i = 0; i < totalSlides;i++) {
