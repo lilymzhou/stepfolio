@@ -47,13 +47,13 @@ function updateSlide(slide) {
   if (defaultSlide.length != 1) {
     return;
   }
-  defaultSlide[0].style.display = "none";
+  defaultSlide[0].classList.add("slide-invisible");
 
   for (let i = 0; i < totalSlides;i++) {
     if (i != curSlide) {
-      slideArr[i].style.display = "none";
+      slideArr[i].classList.add("slide-invisible");
     } else {
-      slideArr[i].style.display = "block";
+      slideArr[i].classList.remove("slide-invisible");
     }
   }
 }

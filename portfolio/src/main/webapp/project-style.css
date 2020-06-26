@@ -10,12 +10,11 @@
   padding: 10px;
 }
 
-.slide {
+.slide-invisible {
   display: none;
 }
 
 .default-slide {
-  display: block;
   background-color: #FFE2FE;
   color:#413C58;
   font-family: Garamond;
