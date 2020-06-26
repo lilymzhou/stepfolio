@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-const curSlide = 0; //By default, display first slide
+let curSlide = 0; //By default, display first slide
 const totalSlides = 3; //total number of slides
 
 /*
@@ -39,10 +39,10 @@ function back() {
 
 function updateSlide(slide) {
   curSlide = slide;
-  var slideArr = document.getElementsByClassName("slide");
-  var defaultSlide = document.getElementsByClassName("default-slide");
+  let slideArr = document.getElementsByClassName("slide");
+  let defaultSlide = document.getElementsByClassName("default-slide");
   defaultSlide[0].style.display = "none";
-  for (var i = 0; i < slideArr.length; i++) {
+  for (let i = 0; i < slideArr.length; i++) {
     if (i != curSlide) {
       slideArr[i].style.display = "none";
     } else {
