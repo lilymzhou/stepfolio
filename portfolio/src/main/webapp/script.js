@@ -12,6 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*
+ * Fetches message from /data and displays it on the DOM.
+ */
+function getMessage() {
+  fetch('/data').then(response => response.text()).then((mssg) => {
+    document.getElementById('message-container').innerText = mssg;
+  });
+}
+
 /**
  * Adds a random greeting to the page.
  */
