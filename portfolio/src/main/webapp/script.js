@@ -17,7 +17,7 @@
  */
 function getMessage() {
   fetch('/data').then(response => response.text()).then((mssg) => {
-    document.getElementById('message-container').innerText = mssg;
+    document.getElementById('message-container').innerHTML = mssg;
   });
 }
 
