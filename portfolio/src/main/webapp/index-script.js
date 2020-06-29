@@ -16,7 +16,20 @@
  * Fetches message from /data and displays it on the DOM.
  */
 function getMessage() {
-  fetch('/data').then(response => response.text()).then((mssg) => {
-    document.getElementById('message-container').innerHTML = mssg;
+  fetch('/data').then(response => response.json()).then((mssg) => {
+    const mssgElem = document.getElementById('message-container');
+    mssgElem.innerHTML = '';
+    mssgElem.appendChild(
+        createLine('Message 1: ' + mssg.MessageOne));
+    mssgElem.appendChild(
+        createLine('Message 2: ' + mssg.MessageTwo));
+    mssgElem.appendChild(
+        createLine('Message 3: ' + mssg.MessageThree));
   });
+}
+
+function createLine(text) {
+  const newLine = document.createElement('p');
+  newLine.innerText = text;
+  return newLine;
 }

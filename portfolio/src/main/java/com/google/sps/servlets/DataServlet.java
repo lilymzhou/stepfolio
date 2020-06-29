@@ -45,8 +45,16 @@ public class DataServlet extends HttpServlet {
   }
 
   private String convertToJson(List<String> messageList) {
-    Gson gson = new Gson();
-    String json = gson.toJson(messageList);
+    String json = "{";
+    json += "\"MessageOne\": ";
+    json += "\"" + messages.get(0) + "\"";
+    json += ", ";
+    json += "\"MessageTwo\": ";
+    json += "\"" + messages.get(1) + "\"";
+    json += ", ";
+    json += "\"MessageThree\": ";
+    json += "\"" + messages.get(2) + "\"";
+    json += "}";
     return json;
   }
 }
