@@ -1,0 +1,34 @@
+.intro-box {
+  background-color: #79BEEE;
+}
+
+.currently-box {
+  background-color: #B47Eb3;
+}
+
+.intro-box, .currently-box {
+  border-radius: 10px;
+  left: 35%;
+  margin-top: 20px;
+  padding: 10px;
+  position: relative;
+  width: 30%;
+}
+
+.pf-image {
+  border-radius: 50%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  max-height: 200px;
+  max-width: 200px;
+  text-align: center;
+  width: 50%;
+}
+
+.icon-row {
+  overflow: auto;
+  text-align: center;
+  width: 100%;
+}
