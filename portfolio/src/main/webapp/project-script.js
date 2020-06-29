@@ -13,21 +13,6 @@
 // limitations under the License.
 
 let curSlide = 0; // By default, display first slide.
-/*
- * Fetches message from /data and displays it on the DOM.
- */
-function getMessage() {
-  fetch('/data').then(response => response.text()).then((mssg) => {
-    document.getElementById('message-container').innerHTML = mssg;
-  });
-}
-
-/**
- * Adds a random greeting to the page.
- */
-function addRandomGreeting() {
-  const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
 
 /*
  * Advance forward by one slide.
