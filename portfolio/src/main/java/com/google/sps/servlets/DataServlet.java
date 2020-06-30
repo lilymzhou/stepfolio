@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 public class DataServlet extends HttpServlet {
 
   private static final String COMMENT_PARAMETER = "comment-input";
-  private static final String NAME = "name-input";
+  private static final String NAME_PARAMETER = "name-input";
   private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
   private static final int MAX_RESULTS = 10;
   private static final String COMMENT_ENTITY = "Comment";
