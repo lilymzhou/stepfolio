@@ -15,9 +15,9 @@
 /*
  * Fetches message from /data and displays it on the DOM.
  */
-function getMessage() {
+function getComments() {
   fetch('/data').then(response => response.json()).then((mssg) => {
-    const mssgElem = document.getElementById('message-container');
+    const mssgElem = document.getElementById('comments-container');
     mssg.history.forEach((line) => {
       mssgElem.appendChild(createLine(line));
     });
