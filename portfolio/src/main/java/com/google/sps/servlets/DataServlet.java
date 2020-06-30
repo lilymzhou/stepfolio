@@ -19,6 +19,7 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.FetchOptions;
 import java.io.IOException;
 import com.google.gson.Gson;
 import java.util.ArrayList;
@@ -31,21 +32,15 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-  private List<String> messages;
   private static final String COMMENT = "comment-input";
   private static final String NAME = "name-input";
   private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-
-  @Override
-  public void init() {
-    messages = new ArrayList<>();
-  }
+  private static final int maxResults = 10;
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Construct comment from user request.
     String fullComment = request.getParameter(NAME) + ": " + request.getParameter(COMMENT);
-    messages.add(fullComment);
 
     response.setContentType("text/html;");
     response.getWriter().println(fullComment);
@@ -62,22 +57,18 @@ public class DataServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Query query = new Query("Comment");
     PreparedQuery results = datastore.prepare(query);
-    for (Entity entity : results.asIterable()) {
-      String curContent = (String) entity.getProperty("content");
-      if (!messages.contains(curContent)) {
-        messages.add(curContent);
-      }
-    }
+    List<Entity> messages = results.asList(FetchOptions.Builder.withLimit(maxResults));
+
     String json = convertToJson(messages);
     response.setContentType("application/json;");
     response.getWriter().println(json);
   }
 
-  private String convertToJson(List<String> messageList) {
+  private String convertToJson(List<Entity> messages) {
     String json = "{\"history\": [";
-    for (int i = 0; i < messageList.size(); i++) {
-      json += "\"" + messages.get(i) + "\"";
-      if (i != messageList.size() - 1) {
+    for (int i = 0; i < messages.size(); i++) {
+      json += "\"" + (String) messages.get(i).getProperty("content") + "\"";
+      if (i != messages.size() - 1) {
         json += ", ";
       }
     }
