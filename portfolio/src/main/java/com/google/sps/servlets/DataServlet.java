@@ -34,8 +34,10 @@ public class DataServlet extends HttpServlet {
 
   private static final String COMMENT = "comment-input";
   private static final String NAME = "name-input";
-  private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-  private static final int maxResults = 10;
+  private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+  private static final int MAX_RESULTS = 10;
+  private static final String COMM_TYPE = "Comment";
+  private static final String COMM_PROP = "content";
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -45,8 +47,8 @@ public class DataServlet extends HttpServlet {
     response.setContentType("text/html;");
     response.getWriter().println(fullComment);
 
-    Entity commEntity = new Entity("Comment");
-    commEntity.setProperty("content", fullComment);
+    Entity commEntity = new Entity(COMM_TYPE);
+    commEntity.setProperty(COMM_PROP, fullComment);
     datastore.put(commEntity);
 
     // Redirect back to main page.
@@ -55,9 +57,9 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query("Comment");
+    Query query = new Query(COMM_TYPE);
     PreparedQuery results = datastore.prepare(query);
-    List<Entity> messages = results.asList(FetchOptions.Builder.withLimit(maxResults));
+    List<Entity> messages = results.asList(FetchOptions.Builder.withLimit(MAX_RESULTS));
 
     String json = convertToJson(messages);
     response.setContentType("application/json;");
@@ -67,7 +69,7 @@ public class DataServlet extends HttpServlet {
   private String convertToJson(List<Entity> messages) {
     String json = "{\"history\": [";
     for (int i = 0; i < messages.size(); i++) {
-      json += "\"" + (String) messages.get(i).getProperty("content") + "\"";
+      json += "\"" + (String) messages.get(i).getProperty(COMM_PROP) + "\"";
       if (i != messages.size() - 1) {
         json += ", ";
       }
