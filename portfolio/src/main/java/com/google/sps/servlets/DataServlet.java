@@ -64,7 +64,9 @@ public class DataServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
     for (Entity entity : results.asIterable()) {
       String curContent = (String) entity.getProperty("content");
-      messages.add(curContent);
+      if (!messages.contains(curContent)) {
+        messages.add(curContent);
+      }
     }
     String json = convertToJson(messages);
     response.setContentType("application/json;");
