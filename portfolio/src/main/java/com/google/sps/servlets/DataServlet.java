@@ -37,18 +37,21 @@ public class DataServlet extends HttpServlet {
   private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
   private static final int MAX_RESULTS = 10;
   private static final String COMM_TYPE = "Comment";
-  private static final String COMM_PROP = "content";
+  private static final String COMM_CONTENT = "content";
+  private static final String COMM_NAME = "name";
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Construct comment from user request.
-    String fullComment = request.getParameter(NAME) + ": " + request.getParameter(COMMENT);
+    String name = request.getParameter(NAME);
+    String comment = request.getParameter(COMMENT);
 
     response.setContentType("text/html;");
-    response.getWriter().println(fullComment);
+    response.getWriter().println(name + ": " + comment);
 
+    // Store comment in Datastore.
     Entity commEntity = new Entity(COMM_TYPE);
-    commEntity.setProperty(COMM_PROP, fullComment);
+    commEntity.setProperty(COMM_CONTENT, comment);
+    commEntity.setProperty(COMM_NAME, name);
     datastore.put(commEntity);
 
     // Redirect back to main page.
@@ -69,7 +72,11 @@ public class DataServlet extends HttpServlet {
   private String convertToJson(List<Entity> messages) {
     String json = "{\"history\": [";
     for (int i = 0; i < messages.size(); i++) {
-      json += "\"" + (String) messages.get(i).getProperty(COMM_PROP) + "\"";
+      Entity cur = messages.get(i);
+      json += "{";
+      json += "\"" + COMM_NAME + "\"" + ": \"" + (String) cur.getProperty(COMM_NAME) + "\"" + ", ";
+      json += "\"" + COMM_CONTENT + "\"" + ": \"" + (String) cur.getProperty(COMM_CONTENT) + "\"";
+      json += "}";
       if (i != messages.size() - 1) {
         json += ", ";
       }
