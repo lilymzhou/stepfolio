@@ -27,34 +27,43 @@ import javax.servlet.http.HttpServletResponse;
 public class DataServlet extends HttpServlet {
 
   private List<String> messages;
+  private static final String COMMENT = "comment-input";
+  private static final String NAME = "name-input";
 
   @Override
   public void init() {
     messages = new ArrayList<>();
-    messages.add("Placeholder message #1.");
-    messages.add("Placeholder message #2.");
-    messages.add("Placeholder message #3.");
+  }
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Construct comment from user request.
+    String fullComment = request.getParameter(NAME) + ": " + request.getParameter(COMMENT);
+    messages.add(fullComment);
+
+    response.setContentType("text/html;");
+    response.getWriter().println(fullComment);
+
+    // Redirect back to main page.
+    response.sendRedirect("/index.html");
   }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String json = convertToJson(messages);
-
     response.setContentType("application/json;");
     response.getWriter().println(json);
   }
 
   private String convertToJson(List<String> messageList) {
-    String json = "{";
-    json += "\"MessageOne\": ";
-    json += "\"" + messages.get(0) + "\"";
-    json += ", ";
-    json += "\"MessageTwo\": ";
-    json += "\"" + messages.get(1) + "\"";
-    json += ", ";
-    json += "\"MessageThree\": ";
-    json += "\"" + messages.get(2) + "\"";
-    json += "}";
+    String json = "{\"history\": [";
+    for (int i = 0; i < messageList.size(); i++) {
+      json += "\"" + messages.get(i) + "\"";
+      if (i != messageList.size() - 1) {
+        json += ", ";
+      }
+    }
+    json += "]}";
     return json;
   }
 }

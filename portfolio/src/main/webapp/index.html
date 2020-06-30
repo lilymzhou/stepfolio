@@ -8,7 +8,7 @@
     <script src="index-script.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
   </head>
-  <body>
+  <body onload="getComments()">
     <div class="content">
       <img class="pf-image" src="/images/flower.jpg" alt="Red Flower">
       <h1>Lily Zhou</h1>
@@ -31,8 +31,13 @@
         <button class="button"><a href="images.html">Food Journal</a></button>
         <button class="button"><a href="projects.html">Projects</a></button>
       </div>
-      <button onclick="getMessage()">Get Message</button>
-      <div id="message-container"></div>
+      <form action="/data" method="POST">
+        <textarea name="name-input">Name</textarea>
+        <textarea name="comment-input">Your comment here.</textarea>
+        <br/><br/>
+        <input type="submit" />
+      </form>
+      <div id="comments-container"></div>
     </div>
   </body>
 </html>

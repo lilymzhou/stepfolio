@@ -15,19 +15,18 @@
 /*
  * Fetches message from /data and displays it on the DOM.
  */
-function getMessage() {
+function getComments() {
   fetch('/data').then(response => response.json()).then((mssg) => {
-    const mssgElem = document.getElementById('message-container');
-    mssgElem.innerHTML = '';
-    mssgElem.appendChild(
-        createLine('Message 1: ' + mssg.MessageOne));
-    mssgElem.appendChild(
-        createLine('Message 2: ' + mssg.MessageTwo));
-    mssgElem.appendChild(
-        createLine('Message 3: ' + mssg.MessageThree));
+    const mssgElem = document.getElementById('comments-container');
+    mssg.history.forEach((line) => {
+      mssgElem.appendChild(createLine(line));
+    });
   });
 }
 
+/*
+ * Creates a new paragraph element from text.
+ */
 function createLine(text) {
   const newLine = document.createElement('p');
   newLine.innerText = text;
