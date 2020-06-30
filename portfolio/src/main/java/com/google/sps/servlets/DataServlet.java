@@ -27,6 +27,8 @@ import javax.servlet.http.HttpServletResponse;
 public class DataServlet extends HttpServlet {
 
   private List<String> messages;
+  private static final String comment = "comment-input";
+  private static final String name = "name-input";
 
   @Override
   public void init() {
@@ -36,9 +38,7 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Construct comment from user request.
-    String comment = request.getParameter("comment-input");
-    String name = request.getParameter("name-input");
-    String fullComment = name + ": " + comment;
+    String fullComment = request.getParameter(name) + ": " + request.getParameter(comment);
 
     response.setContentType("text/html;");
     response.getWriter().println(fullComment);
