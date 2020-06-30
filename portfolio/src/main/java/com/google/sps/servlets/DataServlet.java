@@ -64,24 +64,8 @@ public class DataServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
     List<Entity> messages = results.asList(FetchOptions.Builder.withLimit(MAX_RESULTS));
 
-    String json = convertToJson(messages);
+    String json = new Gson().toJson(messages);
     response.setContentType("application/json;");
     response.getWriter().println(json);
-  }
-
-  private String convertToJson(List<Entity> messages) {
-    String json = "{\"history\": [";
-    for (int i = 0; i < messages.size(); i++) {
-      Entity cur = messages.get(i);
-      json += "{";
-      json += "\"" + COMM_NAME + "\"" + ": \"" + (String) cur.getProperty(COMM_NAME) + "\"" + ", ";
-      json += "\"" + COMM_CONTENT + "\"" + ": \"" + (String) cur.getProperty(COMM_CONTENT) + "\"";
-      json += "}";
-      if (i != messages.size() - 1) {
-        json += ", ";
-      }
-    }
-    json += "]}";
-    return json;
   }
 }
