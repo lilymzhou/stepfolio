@@ -1,18 +1,19 @@
 .intro-box {
   background-color: #79BEEE;
+  width: 30%;
 }
 
 .currently-box {
   background-color: #B47Eb3;
+  width: 30%;
 }
 
-.intro-box, .currently-box {
+.intro-box, .currently-box, .comments-box {
   border-radius: 10px;
   left: 35%;
   margin-top: 20px;
   padding: 10px;
   position: relative;
-  width: 30%;
 }
 
 .pf-image {
@@ -31,4 +32,48 @@
   overflow: auto;
   text-align: center;
   width: 100%;
+}
+
+.comments-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.comments-box {
+  background-color: #413C58;
+  width: 30%;
+}
+
+.comment-button {
+  background-color: #B47Eb3;
+  border: 2px solid #B47Eb3;
+  border-radius: 12px;
+  color: white;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  padding: 16px 32px;
+  text-align: center;
+  transition-duration: 0.4s;
+}
+
+.comment-button a:link, .comment-button a:visited {
+  color: white;
+  text-decoration: none;
+}
+
+.comment-button:hover {
+  background-color: #79BEEE;
+  border: 2px solid #79BEEE;
+  color: black;
+}
+
+.comment-button:hover a {
+  color: black;
+}
+
+.text-input {
+  width: 80%;
 }
