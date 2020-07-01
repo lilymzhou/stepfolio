@@ -72,7 +72,7 @@ public class DataServlet extends HttpServlet {
       numComments = -1;
     }
 
-    List<Entity> messages = (numComments <= 0) ? messages = results.asList(FetchOptions.Builder.withDefaults())
+    List<Entity> messages = (numComments == -1) ? messages = results.asList(FetchOptions.Builder.withDefaults())
       : results.asList(FetchOptions.Builder.withLimit(numComments));
 
     String json = new Gson().toJson(messages);
