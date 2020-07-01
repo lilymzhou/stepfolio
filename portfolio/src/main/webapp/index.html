@@ -37,13 +37,16 @@
           <input type="text" name="name-input"><br><br>
           <label for="comment-input" class="comment-label" rows="4" cols="100">Comment: </label><br>
           <textarea name="comment-input" class="text-input"></textarea><br><br>
+          <input type="submit" />
+        </form>
+        <form action="/data">
           <label for="comment-input" class="comment-label">Max Comments Displayed: </label>
-          <input type="number" id="max-input" name="max-input" min="1" max="100"><br><br>
+          <input type="number" id="max-input" name="max-input" min="1" max="100" value="10"><br><br>
           <input type="submit" />
         </form>
         <div class="buttons-row">
             <button class="comment-button"><a href="index.html">Refresh</a></button>
-            <button class="comment-button">Clear</button>
+            <button class="comment-button" onclick="removeComments()">Clear</button>
         </div>
         <div id="comments-container"></div>
       </div>

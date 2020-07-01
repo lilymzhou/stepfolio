@@ -39,19 +39,21 @@ public class DataServlet extends HttpServlet {
   private static final String COMMENT_ENTITY = "Comment";
   private static final String COMMENT_CONTENT = "content";
   private static final String COMMENT_NAME = "name";
-  private static final int DEFAULT_NUM_RESULTS = 100;
+  //private static final int DEFAULT_NUM_RESULTS = 100;
 
-  private int numComments = DEFAULT_NUM_RESULTS;
+  //private int numComments = DEFAULT_NUM_RESULTS;
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String name = request.getParameter(NAME_PARAMETER);
     String comment = request.getParameter(COMMENT_PARAMETER);
-    String numCommentsStr = request.getParameter(MAX_PARAMETER);
+    //String numCommentsStr = request.getParameter(MAX_PARAMETER);
 
+/*
     if (numCommentsStr.length() > 0) {
       numComments = Integer.parseInt(numCommentsStr);
     }
+*/
 
     response.setContentType("text/html;");
     response.getWriter().println(name + ": " + comment);
@@ -70,7 +72,21 @@ public class DataServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Query query = new Query(COMMENT_ENTITY);
     PreparedQuery results = datastore.prepare(query);
-    List<Entity> messages = results.asList(FetchOptions.Builder.withLimit(numComments));
+
+    String numCommentsStr = request.getParameter(MAX_PARAMETER);
+    int numComments;
+    try {
+      numComments = Integer.parseInt(numCommentsStr);
+    } catch (Exception e) {
+      numComments = -1;
+    }
+
+    List<Entity> messages;
+    if (numComments == -1 || numComments == 0) { //Display all comments (default)
+      messages = results.asList(FetchOptions.Builder.withDefaults());
+    } else {
+      messages = results.asList(FetchOptions.Builder.withLimit(5));
+    }
 
     String json = new Gson().toJson(messages);
     response.setContentType("application/json;");
