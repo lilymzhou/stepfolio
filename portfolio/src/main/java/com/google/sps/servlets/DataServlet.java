@@ -63,6 +63,7 @@ public class DataServlet extends HttpServlet {
     Query query = new Query(COMMENT_ENTITY);
     PreparedQuery results = datastore.prepare(query);
 
+    // Process user-selected maximum number of comments.
     String numCommentsStr = request.getParameter(MAX_PARAMETER);
     int numComments;
     try {
@@ -71,12 +72,8 @@ public class DataServlet extends HttpServlet {
       numComments = -1;
     }
 
-    List<Entity> messages;
-    if (numComments == -1 || numComments == 0) { //Display all comments (default).
-      messages = results.asList(FetchOptions.Builder.withDefaults());
-    } else {
-      messages = results.asList(FetchOptions.Builder.withLimit(5));
-    }
+    List<Entity> messages = (numComments <= 0) ? messages = results.asList(FetchOptions.Builder.withDefaults())
+      : results.asList(FetchOptions.Builder.withLimit(numComments));
 
     String json = new Gson().toJson(messages);
     response.setContentType("application/json;");
