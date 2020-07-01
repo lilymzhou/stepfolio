@@ -37,7 +37,14 @@ function createLine(text) {
  * Remove comments from /data.
  */
 function removeComments() {
-  document.getElementById('comments-container').innerHTML = '';
   const response = fetch('/delete-data', {method: 'POST'});
-  response.then(getComments);
+  response.then(refresh);
+}
+
+/*
+ * Refresh comments displayed.
+ */
+function refresh() {
+  document.getElementById('comments-container').innerHTML = '';
+  getComments();
 }
