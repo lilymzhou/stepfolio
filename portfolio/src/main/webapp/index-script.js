@@ -25,17 +25,19 @@ function getComments() {
 }
 
 /*
- * Removes all comments from Datastore.
- */
-function removeComments() {
-  fetch('/delete-data', {method: 'POST'});
-}
-
-/*
  * Creates a new paragraph element from text.
  */
 function createLine(text) {
   const newLine = document.createElement('p');
   newLine.innerText = text;
   return newLine;
+}
+
+/*
+ * Remove comments from /data.
+ */
+function removeComments() {
+  document.getElementById('comments-container').innerHTML = '';
+  const response = fetch('/delete-data', {method: 'POST'});
+  response.then(getComments);
 }
