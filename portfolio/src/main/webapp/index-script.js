@@ -16,7 +16,7 @@
  * Fetches message from /data and displays it on the DOM.
  */
 function getComments() {
-  fetch('/data').then(response => response.json()).then((mssg) => {
+  fetch('/data?max-input=5').then(response => response.json()).then((mssg) => {
     const mssgElem = document.getElementById('comments-container');
     mssg.forEach((line) => {
       mssgElem.appendChild(createLine(line.propertyMap.name + ": " + line.propertyMap.content));

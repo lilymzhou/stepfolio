@@ -39,21 +39,11 @@ public class DataServlet extends HttpServlet {
   private static final String COMMENT_ENTITY = "Comment";
   private static final String COMMENT_CONTENT = "content";
   private static final String COMMENT_NAME = "name";
-  //private static final int DEFAULT_NUM_RESULTS = 100;
-
-  //private int numComments = DEFAULT_NUM_RESULTS;
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String name = request.getParameter(NAME_PARAMETER);
     String comment = request.getParameter(COMMENT_PARAMETER);
-    //String numCommentsStr = request.getParameter(MAX_PARAMETER);
-
-/*
-    if (numCommentsStr.length() > 0) {
-      numComments = Integer.parseInt(numCommentsStr);
-    }
-*/
 
     response.setContentType("text/html;");
     response.getWriter().println(name + ": " + comment);
@@ -82,7 +72,7 @@ public class DataServlet extends HttpServlet {
     }
 
     List<Entity> messages;
-    if (numComments == -1 || numComments == 0) { //Display all comments (default)
+    if (numComments == -1 || numComments == 0) { //Display all comments (default).
       messages = results.asList(FetchOptions.Builder.withDefaults());
     } else {
       messages = results.asList(FetchOptions.Builder.withLimit(5));
