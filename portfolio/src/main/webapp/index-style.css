@@ -1,11 +1,9 @@
 .intro-box {
   background-color: #79BEEE;
-  width: 30%;
 }
 
 .currently-box {
   background-color: #B47Eb3;
-  width: 30%;
 }
 
 .intro-box, .currently-box, .comments-box {
@@ -14,6 +12,7 @@
   margin-top: 20px;
   padding: 10px;
   position: relative;
+  width: 30%;
 }
 
 .pf-image {
@@ -35,14 +34,10 @@
 }
 
 .comments-box {
+  background-color: #413C58;
   display: flex;
   flex-direction: column;
   justify-content: center;
-}
-
-.comments-box {
-  background-color: #413C58;
-  width: 30%;
 }
 
 .comment-button {
