@@ -34,16 +34,24 @@ public class DataServlet extends HttpServlet {
 
   private static final String COMMENT_PARAMETER = "comment-input";
   private static final String NAME_PARAMETER = "name-input";
+  private static final String MAX_PARAMETER = "max-input";
   private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-  private static final int MAX_RESULTS = 10;
   private static final String COMMENT_ENTITY = "Comment";
   private static final String COMMENT_CONTENT = "content";
   private static final String COMMENT_NAME = "name";
+  private static final int DEFAULT_NUM_RESULTS = 100;
+
+  private int numComments = DEFAULT_NUM_RESULTS;
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String name = request.getParameter(NAME_PARAMETER);
     String comment = request.getParameter(COMMENT_PARAMETER);
+    String numCommentsStr = request.getParameter(MAX_PARAMETER);
+
+    if (numCommentsStr.length() > 0) {
+      numComments = Integer.parseInt(numCommentsStr);
+    }
 
     response.setContentType("text/html;");
     response.getWriter().println(name + ": " + comment);
@@ -62,7 +70,7 @@ public class DataServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Query query = new Query(COMMENT_ENTITY);
     PreparedQuery results = datastore.prepare(query);
-    List<Entity> messages = results.asList(FetchOptions.Builder.withLimit(MAX_RESULTS));
+    List<Entity> messages = results.asList(FetchOptions.Builder.withLimit(numComments));
 
     String json = new Gson().toJson(messages);
     response.setContentType("application/json;");
