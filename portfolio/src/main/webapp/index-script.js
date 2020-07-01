@@ -18,8 +18,8 @@
 function getComments() {
   fetch('/data').then(response => response.json()).then((mssg) => {
     const mssgElem = document.getElementById('comments-container');
-    mssg.history.forEach((line) => {
-      mssgElem.appendChild(createLine(line));
+    mssg.forEach((line) => {
+      mssgElem.appendChild(createLine(line.propertyMap.name + ": " + line.propertyMap.content));
     });
   });
 }
