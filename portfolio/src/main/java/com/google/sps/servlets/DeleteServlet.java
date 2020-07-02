@@ -40,8 +40,6 @@ public class DeleteServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Query query = new Query(COMM_TYPE);
- 
-
     PreparedQuery results = datastore.prepare(query);
  
     for (Entity entity : results.asIterable()) {
