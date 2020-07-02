@@ -72,8 +72,8 @@ public class DataServlet extends HttpServlet {
       numComments = -1;
     }
 
-    List<Entity> messages = (numComments == -1) ? messages = results.asList(FetchOptions.Builder.withDefaults())
-      : results.asList(FetchOptions.Builder.withLimit(numComments));
+    FetchOptions fetchOptions = numComments > 0 ? FetchOptions.Builder.withLimit(numComments) : FetchOptions.Builder.withDefaults();
+    List<Entity> messages = results.asList(fetchOptions);
 
     String json = new Gson().toJson(messages);
     response.setContentType("application/json;");
