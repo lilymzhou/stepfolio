@@ -36,7 +36,7 @@ public class DataServlet extends HttpServlet {
   private static final String NAME_PARAMETER = "name-input";
   private static final String MAX_PARAMETER = "max-input";
   private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-  //private static final String COMMENT_ENTITY = "Comment";
+  private static final String COMMENT_ENTITY = "Comment";
   private static final String COMMENT_CONTENT = "content";
   private static final String COMMENT_NAME = "name";
 
@@ -49,7 +49,7 @@ public class DataServlet extends HttpServlet {
     response.getWriter().println(name + ": " + comment);
 
     // Store comment in Datastore.
-    Entity commEntity = new Entity(ServletConstants.COMMENT_ENTITY);
+    Entity commEntity = new Entity(COMMENT_ENTITY);
     commEntity.setProperty(COMMENT_CONTENT, comment);
     commEntity.setProperty(COMMENT_NAME, name);
     datastore.put(commEntity);
@@ -60,7 +60,7 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query(ServletConstants.COMMENT_ENTITY);
+    Query query = new Query(COMMENT_ENTITY);
     PreparedQuery results = datastore.prepare(query);
 
     // Process user-selected maximum number of comments.
