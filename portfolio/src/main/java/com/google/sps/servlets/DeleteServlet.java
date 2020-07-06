@@ -34,12 +34,12 @@ import com.google.appengine.api.datastore.KeyFactory;
 @WebServlet("/delete-data")
 public class DeleteServlet extends HttpServlet {
  
-  private static final String COMM_TYPE = "Comment";
+  //private static final String COMMENT_ENTITY = "Comment";
   private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
  
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query(COMM_TYPE);
+    Query query = new Query(ServletConstants.COMMENT_ENTITY);
     PreparedQuery results = datastore.prepare(query);
  
     for (Entity entity : results.asIterable()) {
