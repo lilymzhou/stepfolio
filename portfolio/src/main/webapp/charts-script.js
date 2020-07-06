@@ -10,7 +10,7 @@ function drawChart() {
   .then((countryMap) => {
     const data = new google.visualization.DataTable();
     data.addColumn('string', 'Country');
-    data.addColumn('number', 'Rice Production');
+    data.addColumn('number', 'Rice Supplies');
     Object.keys(countryMap).forEach((country) => {
       data.addRow([country, countryMap[country]]);
     });

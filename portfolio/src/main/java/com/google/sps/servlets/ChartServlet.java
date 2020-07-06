@@ -43,7 +43,7 @@ public class ChartServlet extends HttpServlet {
 
       String country = String.valueOf(cells[1]);
 
-      String riceStr = String.valueOf(cells[3]);
+      String riceStr = String.valueOf(cells[4]);
       Double riceConsump;
       if (riceStr.equals("*") || riceStr.equals("")) {
         riceConsump = 0.0;
