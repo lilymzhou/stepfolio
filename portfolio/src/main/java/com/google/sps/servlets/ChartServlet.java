@@ -26,18 +26,31 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/chart-data")
 public class ChartServlet extends HttpServlet {
 
-  private LinkedHashMap<String, Integer> countryMap = new LinkedHashMap<>();
+  // Stores data in the form "country_name: rice_produced."
+  private LinkedHashMap<String, Double> countryMap = new LinkedHashMap<>();
 
   @Override
   public void init() {
-    Scanner scanner = new Scanner(getServletContext().getResourceAsStream(
-        "/WEB-INF/edible_food_2011.csv"));
+    Scanner scanner = new Scanner(getServletContext().getResourceAsStream("/WEB-INF/edible_food_2011.csv"));
+
+    String headerLine1 = scanner.nextLine();
+    String headerLine2 = scanner.nextLine();
+    String headerLine3 = scanner.nextLine();
+
     while (scanner.hasNextLine()) {
       String line = scanner.nextLine();
       String[] cells = line.split(",");
 
       String country = String.valueOf(cells[1]);
-      Integer riceConsump = Integer.valueOf(cells[3]);
+
+      String riceStr = String.valueOf(cells[3]);
+      Double riceConsump;
+      if (riceStr.equals("*") || riceStr.equals("")) {
+        riceConsump = 0.0;
+      } else {
+        riceConsump = Double.valueOf(riceStr);
+      }
+
       countryMap.put(country, riceConsump);
     }
     scanner.close();
