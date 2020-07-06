@@ -1,23 +1,24 @@
-google.charts.load('current', {'packages':['corechart']});
+google.charts.load('current', {
+  'packages':['geochart'], 
+  'mapsApiKey': 'AIzaSyARIbGzg1ObeVicxm6Txr1mqhUR4w12LQQ'
+});
 google.charts.setOnLoadCallback(drawChart);
  
 /** Creates a chart and adds it to the page. */
 function drawChart() {
-  const data = new google.visualization.DataTable();
-  data.addColumn('string', 'Items');
-  data.addColumn('number', 'Count');
-        data.addRows([
-          ['Slice 1', 5],
-          ['Slice 2', 5],
-        ]);
+  var data = google.visualization.arrayToDataTable([
+    ['Country', 'Popularity'],
+    ['Germany', 200],
+    ['United States', 300],
+    ['Brazil', 400],
+    ['Canada', 500],
+    ['France', 600],
+    ['RU', 700]
+  ]);
  
-  const options = {
-    'title': 'Title',
-    'width':500,
-    'height':400
-  };
+  const options = {};
  
-  const chart = new google.visualization.PieChart(
+  const chart = new google.visualization.GeoChart(
       document.getElementById('chart-container'));
   chart.draw(data, options);
 }
