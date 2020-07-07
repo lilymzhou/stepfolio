@@ -1,4 +1,4 @@
-var mapKey = config.MAP_KEY;
+const mapKey = config.MAP_KEY;
 
 google.charts.load('current', {
   'packages':['geochart'], 
