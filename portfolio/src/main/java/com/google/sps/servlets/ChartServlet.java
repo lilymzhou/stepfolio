@@ -26,8 +26,10 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/chart-data")
 public class ChartServlet extends HttpServlet {
 
+  private static final String JSON_TYPE = "application/json";
   private static final String DATA_FILE = "/WEB-INF/edible_food_2011.csv";
   private static final String UNDEFINED_DATA = "*";
+  private static final String FILE_DELIM = ",";
   private static final int COUNTRY_INDEX = 1;
   private static final int RICE_INDEX = 4;
 
@@ -40,7 +42,7 @@ public class ChartServlet extends HttpServlet {
 
     while (scanner.hasNextLine()) {
       String line = scanner.nextLine();
-      String[] cells = line.split(",");
+      String[] cells = line.split(FILE_DELIM);
 
       if (cells.length < RICE_INDEX + 1) {
         continue;
@@ -54,7 +56,7 @@ public class ChartServlet extends HttpServlet {
       }
 
       Double riceConsump;
-      if (riceStr.equals(UNDEFINED_DATA) || riceStr.equals("")) {
+      if (riceStr.equals(UNDEFINED_DATA)) {
         riceConsump = 0.0;
       } else {
         riceConsump = Double.valueOf(riceStr);
@@ -67,7 +69,7 @@ public class ChartServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("application/json");
+    response.setContentType(JSON_TYPE);
     Gson gson = new Gson();
     String json = gson.toJson(countryMap);
     response.getWriter().println(json);
