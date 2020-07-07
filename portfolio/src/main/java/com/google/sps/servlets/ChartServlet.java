@@ -27,6 +27,8 @@ import javax.servlet.http.HttpServletResponse;
 public class ChartServlet extends HttpServlet {
 
   private static final String DATA_FILE = "/WEB-INF/edible_food_2011.csv";
+  private static final int COUNTRY_INDEX = 1;
+  private static final int RICE_INDEX = 4;
 
   // Stores data in the form "country_name: rice_produced."
   private LinkedHashMap<String, Double> countryMap = new LinkedHashMap<>();
@@ -35,17 +37,21 @@ public class ChartServlet extends HttpServlet {
   public void init() {
     Scanner scanner = new Scanner(getServletContext().getResourceAsStream(DATA_FILE));
 
-    String headerLine1 = scanner.nextLine();
-    String headerLine2 = scanner.nextLine();
-    String headerLine3 = scanner.nextLine();
+    //String headerLine1 = scanner.nextLine();
+    //String headerLine2 = scanner.nextLine();
+    //String headerLine3 = scanner.nextLine();
 
     while (scanner.hasNextLine()) {
       String line = scanner.nextLine();
       String[] cells = line.split(",");
 
-      String country = String.valueOf(cells[1]);
+      String country = String.valueOf(cells[COUNTRY_INDEX]);
+      String riceStr = String.valueOf(cells[RICE_INDEX]);
 
-      String riceStr = String.valueOf(cells[4]);
+      if (country.length() == 0 || Double.valueOf(riceStr) == null) {
+        continue;
+      }
+
       Double riceConsump;
       if (riceStr.equals("*") || riceStr.equals("")) {
         riceConsump = 0.0;
