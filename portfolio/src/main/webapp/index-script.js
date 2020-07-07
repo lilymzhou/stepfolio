@@ -12,13 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+const COMMENTS_ID = 'comments-container';
+const MAX_ID = 'max-input';
+const DATA_URL = '/data?max-input=';
+const DELETE_URL = '/delete-data';
+
 /*
  * Fetches message from /data and displays it on the DOM.
  */
 function getComments() {
-  let num = document.getElementById('max-input').value;
-  fetch('/data?max-input=' + num).then(response => response.json()).then((mssg) => {
-    const mssgElem = document.getElementById('comments-container');
+  let num = document.getElementById(MAX_ID).value;
+  fetch(DATA_URL + num).then(response => response.json()).then((mssg) => {
+    const mssgElem = document.getElementById(COMMENTS_ID);
     mssg.forEach((line) => {
       mssgElem.appendChild(createLine(
         line.propertyMap.name + ": " + line.propertyMap.content 
@@ -41,7 +46,7 @@ function createLine(text) {
  * Remove comments from /data.
  */
 function removeComments() {
-  const response = fetch('/delete-data', {method: 'POST'});
+  const response = fetch(DELETE_URL, {method: 'POST'});
   response.then(refresh);
 }
 
@@ -49,6 +54,6 @@ function removeComments() {
  * Refresh comments displayed.
  */
 function refresh() {
-  document.getElementById('comments-container').innerHTML = '';
+  document.getElementById(COMMENTS_ID).innerHTML = '';
   getComments();
 }
