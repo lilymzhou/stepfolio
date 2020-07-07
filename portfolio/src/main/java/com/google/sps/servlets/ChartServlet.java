@@ -37,18 +37,18 @@ public class ChartServlet extends HttpServlet {
   public void init() {
     Scanner scanner = new Scanner(getServletContext().getResourceAsStream(DATA_FILE));
 
-    //String headerLine1 = scanner.nextLine();
-    //String headerLine2 = scanner.nextLine();
-    //String headerLine3 = scanner.nextLine();
-
     while (scanner.hasNextLine()) {
       String line = scanner.nextLine();
       String[] cells = line.split(",");
 
+      if (cells.length < RICE_INDEX + 1) {
+        continue;
+      } 
+
       String country = String.valueOf(cells[COUNTRY_INDEX]);
       String riceStr = String.valueOf(cells[RICE_INDEX]);
 
-      if (country.length() == 0 || Double.valueOf(riceStr) == null) {
+      if (country.length() == 0 || riceStr.length() == 0) {
         continue;
       }
 
