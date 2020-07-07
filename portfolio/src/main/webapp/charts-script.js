@@ -1,6 +1,8 @@
+var mapKey = config.MAP_KEY;
+
 google.charts.load('current', {
   'packages':['geochart'], 
-  'mapsApiKey': 'AIzaSyARIbGzg1ObeVicxm6Txr1mqhUR4w12LQQ'
+  'mapsApiKey': mapKey
 });
 google.charts.setOnLoadCallback(drawChart);
  
