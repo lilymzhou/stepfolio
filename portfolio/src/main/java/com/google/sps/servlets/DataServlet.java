@@ -14,6 +14,9 @@
 
 package com.google.sps.servlets;
 
+import com.google.cloud.language.v1.Document;
+import com.google.cloud.language.v1.LanguageServiceClient;
+import com.google.cloud.language.v1.Sentiment;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -38,6 +41,7 @@ public class DataServlet extends HttpServlet {
   private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
   private static final String COMMENT_CONTENT = "content";
   private static final String COMMENT_NAME = "name";
+  private static final String COMMENT_SENTIMENT = "sentiment";
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -47,10 +51,18 @@ public class DataServlet extends HttpServlet {
     response.setContentType("text/html;");
     response.getWriter().println(name + ": " + comment);
 
+    // Perform sentiment analysis.
+    Document doc = Document.newBuilder().setContent(comment).setType(Document.Type.PLAIN_TEXT).build();
+    LanguageServiceClient languageService = LanguageServiceClient.create();
+    Sentiment sentiment = languageService.analyzeSentiment(doc).getDocumentSentiment();
+    float score = sentiment.getScore();
+    languageService.close();
+
     // Store comment in Datastore.
     Entity commEntity = new Entity(DataServletConsts.COMMENT_ENTITY);
     commEntity.setProperty(COMMENT_CONTENT, comment);
     commEntity.setProperty(COMMENT_NAME, name);
+    commEntity.setProperty(COMMENT_SENTIMENT, score);
     datastore.put(commEntity);
 
     // Redirect back to main page.
