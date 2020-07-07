@@ -20,7 +20,10 @@ function getComments() {
   fetch('/data?max-input=' + num).then(response => response.json()).then((mssg) => {
     const mssgElem = document.getElementById('comments-container');
     mssg.forEach((line) => {
-      mssgElem.appendChild(createLine(line.propertyMap.name + ": " + line.propertyMap.content));
+      mssgElem.appendChild(createLine(
+        line.propertyMap.name + ": " + line.propertyMap.content 
+        + " (score: " + line.propertyMap.sentiment + ")"
+      ));
     });
   });
 }
