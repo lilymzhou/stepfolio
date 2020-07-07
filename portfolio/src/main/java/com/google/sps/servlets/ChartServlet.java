@@ -26,12 +26,14 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/chart-data")
 public class ChartServlet extends HttpServlet {
 
+  private static final String DATA_FILE = "/WEB-INF/edible_food_2011.csv";
+
   // Stores data in the form "country_name: rice_produced."
   private LinkedHashMap<String, Double> countryMap = new LinkedHashMap<>();
 
   @Override
   public void init() {
-    Scanner scanner = new Scanner(getServletContext().getResourceAsStream("/WEB-INF/edible_food_2011.csv"));
+    Scanner scanner = new Scanner(getServletContext().getResourceAsStream(DATA_FILE));
 
     String headerLine1 = scanner.nextLine();
     String headerLine2 = scanner.nextLine();
