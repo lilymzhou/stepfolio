@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ChartServlet extends HttpServlet {
 
   private static final String DATA_FILE = "/WEB-INF/edible_food_2011.csv";
+  private static final String UNDEFINED_DATA = "*";
   private static final int COUNTRY_INDEX = 1;
   private static final int RICE_INDEX = 4;
 
@@ -53,7 +54,7 @@ public class ChartServlet extends HttpServlet {
       }
 
       Double riceConsump;
-      if (riceStr.equals("*") || riceStr.equals("")) {
+      if (riceStr.equals(UNDEFINED_DATA) || riceStr.equals("")) {
         riceConsump = 0.0;
       } else {
         riceConsump = Double.valueOf(riceStr);
