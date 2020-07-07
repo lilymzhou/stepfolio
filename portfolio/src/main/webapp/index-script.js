@@ -16,7 +16,8 @@
  * Fetches message from /data and displays it on the DOM.
  */
 function getComments() {
-  fetch('/data').then(response => response.json()).then((mssg) => {
+  let num = document.getElementById('max-input').value;
+  fetch('/data?max-input=' + num).then(response => response.json()).then((mssg) => {
     const mssgElem = document.getElementById('comments-container');
     mssg.forEach((line) => {
       mssgElem.appendChild(createLine(line.propertyMap.name + ": " + line.propertyMap.content));
@@ -31,4 +32,20 @@ function createLine(text) {
   const newLine = document.createElement('p');
   newLine.innerText = text;
   return newLine;
+}
+
+/*
+ * Remove comments from /data.
+ */
+function removeComments() {
+  const response = fetch('/delete-data', {method: 'POST'});
+  response.then(refresh);
+}
+
+/*
+ * Refresh comments displayed.
+ */
+function refresh() {
+  document.getElementById('comments-container').innerHTML = '';
+  getComments();
 }

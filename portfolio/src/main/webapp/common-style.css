@@ -12,7 +12,7 @@ h1, h2 {
   text-transform: uppercase;
 }
 
-p, ul {
+p, ul, .comment-label {
   color: white;
   font-family: Garamond;
   font-size: 14px;

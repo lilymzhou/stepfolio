@@ -34,9 +34,8 @@ public class DataServlet extends HttpServlet {
 
   private static final String COMMENT_PARAMETER = "comment-input";
   private static final String NAME_PARAMETER = "name-input";
+  private static final String MAX_PARAMETER = "max-input";
   private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-  private static final int MAX_RESULTS = 10;
-  private static final String COMMENT_ENTITY = "Comment";
   private static final String COMMENT_CONTENT = "content";
   private static final String COMMENT_NAME = "name";
 
@@ -49,7 +48,7 @@ public class DataServlet extends HttpServlet {
     response.getWriter().println(name + ": " + comment);
 
     // Store comment in Datastore.
-    Entity commEntity = new Entity(COMMENT_ENTITY);
+    Entity commEntity = new Entity(DataServletConsts.COMMENT_ENTITY);
     commEntity.setProperty(COMMENT_CONTENT, comment);
     commEntity.setProperty(COMMENT_NAME, name);
     datastore.put(commEntity);
@@ -60,9 +59,20 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query(COMMENT_ENTITY);
+    Query query = new Query(DataServletConsts.COMMENT_ENTITY);
     PreparedQuery results = datastore.prepare(query);
-    List<Entity> messages = results.asList(FetchOptions.Builder.withLimit(MAX_RESULTS));
+
+    // Process user-selected maximum number of comments.
+    String numCommentsStr = request.getParameter(MAX_PARAMETER);
+    int numComments;
+    try {
+      numComments = Integer.parseInt(numCommentsStr);
+    } catch (Exception e) {
+      numComments = -1;
+    }
+
+    FetchOptions fetchOptions = numComments > 0 ? FetchOptions.Builder.withLimit(numComments) : FetchOptions.Builder.withDefaults();
+    List<Entity> messages = results.asList(fetchOptions);
 
     String json = new Gson().toJson(messages);
     response.setContentType("application/json;");

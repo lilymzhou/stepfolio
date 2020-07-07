@@ -22,7 +22,7 @@
       <div class="currently-box">
         <p>Currently:</p>
         <ul>
-          <li>reading <i>Interior Chinatown</i> by Charles Yu</li>
+          <li>reading 《我们仨》 by Yang Jiang</li>
           <li>based in Foster City, California</li>
           <li>learning how to bake</li>
         </ul>
@@ -31,13 +31,23 @@
         <button class="button"><a href="images.html">Food Journal</a></button>
         <button class="button"><a href="projects.html">Projects</a></button>
       </div>
-      <form action="/data" method="POST">
-        <textarea name="name-input">Name</textarea>
-        <textarea name="comment-input">Your comment here.</textarea>
-        <br/><br/>
-        <input type="submit" />
-      </form>
-      <div id="comments-container"></div>
+      <div class="comments-box">
+        <form action="/data" method="POST">
+          <label for="name-input" class="comment-label">Name: </label><br>
+          <input type="text" name="name-input"><br><br>
+          <label for="comment-input" class="comment-label" rows="4" cols="100">Comment: </label><br>
+          <textarea name="comment-input" class="text-input"></textarea><br><br>
+          <input type="submit" />
+        </form>
+        <br><br>
+        <div class="buttons-row">
+            <button class="comment-button" onclick="refresh()">Refresh</button>
+            <button class="comment-button" onclick="removeComments()">Clear</button>
+        </div>
+        <label for="comment-input" class="comment-label">Max Comments Displayed: </label>
+        <input type="number" id="max-input" name="max-input" min="0" max="100" value="5"><br><br>
+        <div id="comments-container"></div>
+      </div>
     </div>
   </body>
 </html>
