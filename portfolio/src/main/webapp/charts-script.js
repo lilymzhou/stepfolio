@@ -14,11 +14,9 @@ function drawChart() {
     Object.keys(countryMap).forEach((country) => {
       data.addRow([country, countryMap[country]]);
     });
-
-  const options = {};
  
   const chart = new google.visualization.GeoChart(
       document.getElementById('chart-container'));
-  chart.draw(data, options);
+  chart.draw(data, {});
   });
 }
