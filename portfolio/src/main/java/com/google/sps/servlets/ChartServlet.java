@@ -50,17 +50,11 @@ public class ChartServlet extends HttpServlet {
 
       String country = String.valueOf(cells[COUNTRY_INDEX]);
       String riceStr = String.valueOf(cells[RICE_INDEX]);
-
-      if (country.length() == 0 || riceStr.length() == 0) {
+      if (country.isEmpty() || riceStr.isEmpty()) {
         continue;
       }
 
-      Double riceConsump;
-      if (riceStr.equals(UNDEFINED_DATA)) {
-        riceConsump = 0.0;
-      } else {
-        riceConsump = Double.valueOf(riceStr);
-      }
+      Double riceConsump = riceStr.equals(UNDEFINED_DATA) ? 0.0 : Double.valueOf(riceStr);
 
       countryMap.put(country, riceConsump);
     }
