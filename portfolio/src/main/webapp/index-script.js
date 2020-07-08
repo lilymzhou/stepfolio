@@ -21,7 +21,7 @@ const DELETE_URL = '/delete-data';
  * Fetches message from /data and displays it on the DOM.
  */
 function getComments() {
-  let num = document.getElementById(MAX_ID).value;
+  const num = document.getElementById(MAX_ID).value;
   fetch(DATA_URL + num).then(response => response.json()).then((mssg) => {
     const mssgElem = document.getElementById(COMMENTS_ID);
     mssg.forEach((line) => {
