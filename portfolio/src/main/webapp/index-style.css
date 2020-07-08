@@ -34,13 +34,10 @@
 }
 
 .comments-box {
+  background-color: #413C58;
   display: flex;
   flex-direction: column;
   justify-content: center;
-}
-
-.comments-box {
-  background-color: #413C58;
 }
 
 .comment-button {

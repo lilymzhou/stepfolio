@@ -12,14 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+const COMMENTS_ID = 'comments-container';
+const MAX_ID = 'max-input';
+const DATA_URL = '/data?max-input=';
+const DELETE_URL = '/delete-data';
+
 /*
  * Fetches message from /data and displays it on the DOM.
  */
 function getComments() {
-  fetch('/data').then(response => response.json()).then((mssg) => {
-    const mssgElem = document.getElementById('comments-container');
+  const num = document.getElementById(MAX_ID).value;
+  fetch(DATA_URL + num).then(response => response.json()).then((mssg) => {
+    const mssgElem = document.getElementById(COMMENTS_ID);
     mssg.forEach((line) => {
-      mssgElem.appendChild(createLine(line.propertyMap.name + ": " + line.propertyMap.content));
+      mssgElem.appendChild(createLine(
+        line.propertyMap.name + ": " + line.propertyMap.content 
+        + " (score: " + line.propertyMap.sentiment + ")"
+      ));
     });
   });
 }
@@ -31,4 +40,20 @@ function createLine(text) {
   const newLine = document.createElement('p');
   newLine.innerText = text;
   return newLine;
+}
+
+/*
+ * Remove comments from /data.
+ */
+function removeComments() {
+  const response = fetch(DELETE_URL, {method: 'POST'});
+  response.then(refresh);
+}
+
+/*
+ * Refresh comments displayed.
+ */
+function refresh() {
+  document.getElementById(COMMENTS_ID).innerHTML = '';
+  getComments();
 }
