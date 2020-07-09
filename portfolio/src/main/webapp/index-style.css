@@ -1,12 +1,14 @@
 .intro-box {
-  background-color: #79BEEE;
+  background-color: #79beee;
 }
 
 .currently-box {
-  background-color: #B47Eb3;
+  background-color: #b47eb3;
 }
 
-.intro-box, .currently-box, .comments-box {
+.intro-box,
+.currently-box,
+.comments-box {
   border-radius: 10px;
   left: 35%;
   margin-top: 20px;
@@ -34,15 +36,15 @@
 }
 
 .comments-box {
-  background-color: #413C58;
+  background-color: #413c58;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
 .comment-button {
-  background-color: #B47Eb3;
-  border: 2px solid #B47Eb3;
+  background-color: #b47eb3;
+  border: 2px solid #b47eb3;
   border-radius: 12px;
   color: white;
   cursor: pointer;
@@ -54,14 +56,15 @@
   transition-duration: 0.4s;
 }
 
-.comment-button a:link, .comment-button a:visited {
+.comment-button a:link,
+.comment-button a:visited {
   color: white;
   text-decoration: none;
 }
 
 .comment-button:hover {
-  background-color: #79BEEE;
-  border: 2px solid #79BEEE;
+  background-color: #79beee;
+  border: 2px solid #79beee;
   color: black;
 }
 

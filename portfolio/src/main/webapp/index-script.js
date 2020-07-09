@@ -26,9 +26,8 @@ function getComments() {
     const mssgElem = document.getElementById(COMMENTS_ID);
     mssg.forEach((line) => {
       mssgElem.appendChild(createLine(
-        line.propertyMap.name + ": " + line.propertyMap.content 
-        + " (score: " + line.propertyMap.sentiment + ")"
-      ));
+          line.propertyMap.name + ': ' + line.propertyMap.content +
+          ' (score: ' + line.propertyMap.sentiment + ')'));
     });
   });
 }

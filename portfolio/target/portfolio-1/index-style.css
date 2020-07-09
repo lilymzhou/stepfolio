@@ -1,0 +1,74 @@
+.intro-box {
+  background-color: #79BEEE;
+}
+
+.currently-box {
+  background-color: #B47Eb3;
+}
+
+.intro-box, .currently-box, .comments-box {
+  border-radius: 10px;
+  left: 35%;
+  margin-top: 20px;
+  padding: 10px;
+  position: relative;
+  width: 30%;
+}
+
+.pf-image {
+  border-radius: 50%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  max-height: 200px;
+  max-width: 200px;
+  text-align: center;
+  width: 50%;
+}
+
+.icon-row {
+  overflow: auto;
+  text-align: center;
+  width: 100%;
+}
+
+.comments-box {
+  background-color: #413C58;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.comment-button {
+  background-color: #B47Eb3;
+  border: 2px solid #B47Eb3;
+  border-radius: 12px;
+  color: white;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  padding: 16px 32px;
+  text-align: center;
+  transition-duration: 0.4s;
+}
+
+.comment-button a:link, .comment-button a:visited {
+  color: white;
+  text-decoration: none;
+}
+
+.comment-button:hover {
+  background-color: #79BEEE;
+  border: 2px solid #79BEEE;
+  color: black;
+}
+
+.comment-button:hover a {
+  color: black;
+}
+
+.text-input {
+  width: 80%;
+}
