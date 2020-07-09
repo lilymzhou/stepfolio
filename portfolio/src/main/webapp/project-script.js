@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-let curSlide = 0; // By default, display first slide.
+let curSlide = 0;  // By default, display first slide.
 
 /*
  * Advance forward by one slide.
@@ -32,7 +32,7 @@ function back() {
  * Display slide, and hide all other slide elements.
  */
 function updateSlide(slide) {
-  let slideArr = document.getElementsByClassName("slide");
+  let slideArr = document.getElementsByClassName('slide');
   let totalSlides = slideArr.length;
 
   // Adjust curSlide  value.
@@ -43,17 +43,17 @@ function updateSlide(slide) {
   }
   curSlide = slide;
 
-  let defaultSlide = document.getElementsByClassName("default-slide");
+  let defaultSlide = document.getElementsByClassName('default-slide');
   if (defaultSlide.length != 1) {
     return;
   }
-  defaultSlide[0].classList.add("slide-invisible");
+  defaultSlide[0].classList.add('slide-invisible');
 
-  for (let i = 0; i < totalSlides;i++) {
+  for (let i = 0; i < totalSlides; i++) {
     if (i != curSlide) {
-      slideArr[i].classList.add("slide-invisible");
+      slideArr[i].classList.add('slide-invisible');
     } else {
-      slideArr[i].classList.remove("slide-invisible");
+      slideArr[i].classList.remove('slide-invisible');
     }
   }
 }
