@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/chart-data")
 public class ChartServlet extends HttpServlet {
-
   private static final String JSON_TYPE = "application/json";
   private static final String DATA_FILE = "/WEB-INF/edible_food_2011.csv";
   private static final String UNDEFINED_DATA = "*";
@@ -46,7 +45,7 @@ public class ChartServlet extends HttpServlet {
 
       if (cells.length < RICE_INDEX + 1) {
         continue;
-      } 
+      }
 
       String country = String.valueOf(cells[COUNTRY_INDEX]);
       String riceStr = String.valueOf(cells[RICE_INDEX]);

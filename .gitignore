@@ -11,3 +11,5 @@ target/	target/
 
 # Includes API keys
 config.js
+
+portfolio/target

@@ -1,18 +1,21 @@
 .content {
-  background-color: #E1f0C4;
-  border: 2px solid #79BEEE;
+  background-color: #e1f0c4;
+  border: 2px solid #79beee;
   border-radius: 5px;
 }
 
-h1, h2 {
-  color: #413C58;
+h1,
+h2 {
+  color: #413c58;
   display: flex;
   font-family: 'Raleway', sans-serif;
   justify-content: center;
   text-transform: uppercase;
 }
 
-p, ul, .comment-label {
+p,
+ul,
+.comment-label {
   color: white;
   font-family: Garamond;
   font-size: 14px;
@@ -26,8 +29,8 @@ p, ul, .comment-label {
 }
 
 .button {
-  background-color: #E1f0C4;
-  border: 2px solid #413C58;
+  background-color: #e1f0c4;
+  border: 2px solid #413c58;
   border-radius: 12px;
   cursor: pointer;
   display: inline-block;
@@ -38,14 +41,14 @@ p, ul, .comment-label {
 }
 
 a {
-  color: #413C58;
+  color: #413c58;
   font-family: 'Raleway', sans-serif;
   font-size: 16px;
   text-decoration: none;
 }
 
 .button:hover {
-  background-color: #413C58;
+  background-color: #413c58;
   color: white;
 }
 
@@ -54,14 +57,14 @@ a {
 }
 
 .img-block {
-  background-color: #413C58;
+  background-color: #413c58;
   height: 25%;
   left: 0;
   opacity: 0;
   position: absolute;
   right: 0;
   top: 0;
-  transition: .5s ease;
+  transition: 0.5s ease;
   width: 100%;
 }
 
