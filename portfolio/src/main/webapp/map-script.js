@@ -10,14 +10,23 @@ function createMap() {
     const map = new google.maps.Map(
         document.getElementById(MAP_ID),
         // Centered at Googleplex (Mountain View).
-        {center: {lat: 37.422, lng: -122.084}, zoom: 3});
+        {center: {lat: 37.422, lng: -122.084}, zoom: 5});
 
     bigfootArr.forEach((sighting) => {
-      new google.maps.Marker({
+      const marker = new google.maps.Marker({
         position: {lat: sighting.lat, lng: sighting.lng},
         map: map,
         title: sighting.title
       });
+      const infoStr = '<div>' +
+          '<p><b>Date:</b> ' + sighting.date + '</p>' +
+          '<p><b>Location:</b> ' + sighting.location + '</p>' +
+          '<p><b>Description:</b> ' + sighting.description + '</p>' +
+          '</div>';
+      const infoWindow = new google.maps.InfoWindow({content: infoStr});
+      marker.addListener('click', () => {
+        infoWindow.open(map, marker);
+      })
     })
   });
 }

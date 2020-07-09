@@ -15,13 +15,23 @@
 package com.google.sps.data;
 
 public class Bigfoot {
+  // Coordinates of Bigfoot sighting.
   private double lat;
   private double lng;
-  private String title;
 
-  public Bigfoot(double lat, double lng, String title) {
+  private String title;
+  private String description;
+  private String date;
+  // Description in words of sighting location.
+  private String location;
+
+  public Bigfoot(
+      double lat, double lng, String title, String description, String location, String date) {
     this.lat = lat;
     this.lng = lng;
     this.title = title;
+    this.description = description;
+    this.location = location;
+    this.date = date;
   }
 }

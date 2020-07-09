@@ -31,9 +31,12 @@ public class BigfootServlet extends HttpServlet {
   private static final String DATA_FILE = "/WEB-INF/bfro_reports_geocoded.csv";
   private static final String FILE_DELIM = ",";
 
+  private static final int DESCR_INDEX = 0;
+  private static final int LOC_INDEX = 1;
   private static final int TITLE_INDEX = 5;
   private static final int LAT_INDEX = 6;
   private static final int LNG_INDEX = 7;
+  private static final int DATE_INDEX = 8;
 
   // Stores latitude, longitude, and title of each Bigfoot sighting in csv file.
   private ArrayList<Bigfoot> bigfootArr = new ArrayList<>();
@@ -45,14 +48,18 @@ public class BigfootServlet extends HttpServlet {
     while (scanner.hasNextLine()) {
       String line = scanner.nextLine();
       String[] cells = line.split(FILE_DELIM);
-      if (cells.length < LNG_INDEX + 1) {
+      if (cells.length < DATE_INDEX + 1) {
         continue;
       }
 
+      String description = String.valueOf(cells[DESCR_INDEX]);
+      String location = String.valueOf(cells[LOC_INDEX]);
       String title = String.valueOf(cells[TITLE_INDEX]);
       String latStr = String.valueOf(cells[LAT_INDEX]);
       String lngStr = String.valueOf(cells[LNG_INDEX]);
-      if (title.isEmpty() || latStr.isEmpty() || lngStr.isEmpty()) {
+      String date = String.valueOf(cells[DATE_INDEX]);
+      if (description.isEmpty() || location.isEmpty() || title.isEmpty() || latStr.isEmpty()
+          || lngStr.isEmpty() || date.isEmpty()) {
         continue;
       }
 
@@ -70,7 +77,7 @@ public class BigfootServlet extends HttpServlet {
         continue;
       }
 
-      Bigfoot newSighting = new Bigfoot(lat, lng, title);
+      Bigfoot newSighting = new Bigfoot(lat, lng, title, description, location, date);
       bigfootArr.add(newSighting);
     }
     scanner.close();
