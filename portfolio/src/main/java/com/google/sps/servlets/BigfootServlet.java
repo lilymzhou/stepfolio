@@ -64,14 +64,9 @@ public class BigfootServlet extends HttpServlet {
       }
 
       Double lat;
-      try {
-        lat = Double.valueOf(latStr);
-      } catch (NumberFormatException e) {
-        continue;
-      }
-
       Double lng;
       try {
+        lat = Double.valueOf(latStr);
         lng = Double.valueOf(lngStr);
       } catch (NumberFormatException e) {
         continue;
