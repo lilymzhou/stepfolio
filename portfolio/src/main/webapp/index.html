@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Lily Zhou</title>
-    <link rel="stylesheet" href="common-style.css">
-    <link rel="stylesheet" href="index-style.css">
+    <link rel="stylesheet" href="common-style.css" />
+    <link rel="stylesheet" href="index-style.css" />
     <script src="index-script.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet" />
   </head>
   <body onload="getComments()">
     <div class="content">
-      <img class="pf-image" src="/images/flower.jpg" alt="Red Flower">
+      <img class="pf-image" src="/images/flower.jpg" alt="Red Flower" />
       <h1>Lily Zhou</h1>
       <div class="icon-row">
-        <a href="https://www.linkedin.com/in/lily-z-408069122"><img src="images/linkedin.jpg" width="30" height="30" alt="LinkedIn"></a>
-        <a href="https://github.com/lilymzhou"><img src="images/github.svg" width="30" height="30" alt="GitHub"></a>
+        <a href="https://www.linkedin.com/in/lily-z-408069122"
+          ><img src="images/linkedin.jpg" width="30" height="30" alt="LinkedIn"
+        /></a>
+        <a href="https://github.com/lilymzhou"><img src="images/github.svg" width="30" height="30" alt="GitHub" /></a>
       </div>
       <div class="intro-box">
         <p>Hi! I'm Lily, a STEP Intern at Google this summer and a rising junior @ Stanford studying CS + English.</p>
@@ -28,24 +30,26 @@
         </ul>
       </div>
       <div class="buttons-row">
-        <button class="button"><a href="images.html">Food Journal</a></button>
-        <button class="button"><a href="projects.html">Projects</a></button>
+        <a href="images.html" class="button">Food Journal</a>
+        <a href="projects.html" class="button">Projects</a>
+        <a href="map.html" class="button">Map</a>
+        <a href="charts.html" class="button">Chart</a>
       </div>
       <div class="comments-box">
         <form action="/data" method="POST">
-          <label for="name-input" class="comment-label">Name: </label><br>
-          <input type="text" name="name-input"><br><br>
-          <label for="comment-input" class="comment-label" rows="4" cols="100">Comment: </label><br>
-          <textarea name="comment-input" class="text-input"></textarea><br><br>
+          <label for="name-input" class="comment-label">Name: </label><br />
+          <input type="text" name="name-input" /><br /><br />
+          <label for="comment-input" class="comment-label" rows="4" cols="100">Comment: </label><br />
+          <textarea name="comment-input" class="text-input"></textarea><br /><br />
           <input type="submit" />
         </form>
-        <br><br>
+        <br /><br />
         <div class="buttons-row">
-            <button class="comment-button" onclick="refresh()">Refresh</button>
-            <button class="comment-button" onclick="removeComments()">Clear</button>
+          <button class="comment-button" type="button" onclick="refresh()">Refresh</button>
+          <button class="comment-button" type="button" onclick="removeComments()">Clear</button>
         </div>
         <label for="comment-input" class="comment-label">Max Comments Displayed: </label>
-        <input type="number" id="max-input" name="max-input" min="0" max="100" value="5"><br><br>
+        <input type="number" id="max-input" name="max-input" min="0" max="100" value="5" /><br /><br />
         <div id="comments-container"></div>
       </div>
     </div>
