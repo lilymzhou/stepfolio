@@ -27,22 +27,29 @@ import javax.servlet.http.HttpServletResponse;
 public class ChartServlet extends HttpServlet {
   private static final String JSON_TYPE = "application/json";
   private static final String DATA_FILE = "/WEB-INF/edible_food_2011.csv";
+  private static final String COUNTRY_FILE = "/WEB-INF/country_name_map.csv";
+  private static final int CSV_INDEX = 0;
+  private static final int GEO_INDEX = 1;
   private static final String UNDEFINED_DATA = "*";
   private static final String FILE_DELIM = ",";
   private static final int COUNTRY_INDEX = 1;
   private static final int RICE_INDEX = 4;
 
-  // Stores data in the form "country_name: rice_produced."
+  // Stores data in the form "geochart_country_name: rice_supplies."
   private LinkedHashMap<String, Double> countryMap = new LinkedHashMap<>();
+
+  // Stores data in the form "csv_country_name : geochart_country_name."
+  private LinkedHashMap<String, String> countryNameMap = new LinkedHashMap<>();
 
   @Override
   public void init() {
+    fillCountryNameMap();
+
     Scanner scanner = new Scanner(getServletContext().getResourceAsStream(DATA_FILE));
 
     while (scanner.hasNextLine()) {
       String line = scanner.nextLine();
       String[] cells = line.split(FILE_DELIM);
-
       if (cells.length < RICE_INDEX + 1) {
         continue;
       }
@@ -55,9 +62,21 @@ public class ChartServlet extends HttpServlet {
 
       Double riceConsump = riceStr.equals(UNDEFINED_DATA) ? 0.0 : Double.valueOf(riceStr);
 
-      countryMap.put(country, riceConsump);
+      String countryName = countryNameMap.containsKey(country) ? countryNameMap.get(country) : country;
+      countryMap.put(countryName, riceConsump);
     }
     scanner.close();
+  }
+
+  private void fillCountryNameMap() {
+    Scanner countryScanner = new Scanner(getServletContext().getResourceAsStream(COUNTRY_FILE));
+
+    while (countryScanner.hasNextLine()) {
+      String line = countryScanner.nextLine();
+      String[] cells = line.split(FILE_DELIM);
+      countryNameMap.put(cells[CSV_INDEX], cells[GEO_INDEX]);
+    }
+    countryScanner.close();
   }
 
   @Override
