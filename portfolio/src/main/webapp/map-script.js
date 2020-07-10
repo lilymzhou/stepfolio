@@ -16,7 +16,8 @@ function createMap() {
       const marker = new google.maps.Marker({
         position: {lat: sighting.lat, lng: sighting.lng},
         map: map,
-        title: sighting.title
+        title: sighting.title,
+        animation: google.maps.Animation.DROP
       });
       const infoStr = '<div>' +
           '<p><b>Title:</b> ' + sighting.title + '</p>' +
@@ -27,9 +28,16 @@ function createMap() {
       const infoWindow = new google.maps.InfoWindow({content: infoStr});
       marker.addListener('click', () => {
         infoWindow.open(map, marker);
+        animateMarkerBounce(marker);
       })
     })
   });
+}
+
+/* Animate a single bounce for marker when clicked on. */
+function animateMarkerBounce(marker) {
+  marker.setAnimation(google.maps.Animation.BOUNCE);
+  setTimeout(marker.setAnimation(null), 1000);
 }
 
 function addScriptToHead() {
