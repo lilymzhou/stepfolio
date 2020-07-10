@@ -19,6 +19,7 @@ function createMap() {
         title: sighting.title
       });
       const infoStr = '<div>' +
+          '<p><b>Title:</b> ' + sighting.title + '</p>' +
           '<p><b>Date:</b> ' + sighting.date + '</p>' +
           '<p><b>Location:</b> ' + sighting.location + '</p>' +
           '<p><b>Description:</b> ' + sighting.description + '</p>' +
