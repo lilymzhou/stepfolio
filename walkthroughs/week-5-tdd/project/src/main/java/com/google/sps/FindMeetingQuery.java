@@ -15,61 +15,135 @@
 package com.google.sps;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collection;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    ArrayList<TimeRange> ranges = new ArrayList<TimeRange>();
+    ArrayList<TimeRange> slots = new ArrayList<TimeRange>();
     
     if (request.getDuration() > TimeRange.WHOLE_DAY.duration()) {
-      return ranges;
+      return slots;
     }
 
-    ranges.add(TimeRange.WHOLE_DAY);
+    slots.add(TimeRange.WHOLE_DAY);
+
+    if (!request.getOptionalAttendees().isEmpty()) {
+      ArrayList<TimeRange> optionalSlots = findTimeSlots(events, request, slots, true);
+      if (optionalSlots.isEmpty() && !request.getAttendees().isEmpty()) {
+        return findTimeSlots(events, request, slots, false);
+      }
+      return optionalSlots;
+    } else {
+      return findTimeSlots(events, request, slots, false);
+    }
+  }
+
+  /*
+   * Returns a list with all the available time slots when the requested meeting
+   * can take place.
+   */
+  private ArrayList<TimeRange> findTimeSlots(Collection<Event> events, MeetingRequest request,
+    ArrayList<TimeRange> slots, boolean hasOptionalAttendees) {
+
+    // A copy of slots that stores new changes to slots without interferring
+    // with the for loop below.
+    ArrayList<TimeRange> curSlots = new ArrayList<>(slots);
+
     for (Event event : events) {
       TimeRange eventTime = event.getWhen();
-      if (!hasRequestAttendees(event, request)) {
+      slots = curSlots;
+
+      // Determine whether event's attendees overlaps with request's attendees.
+      if (hasOptionalAttendees && !hasAllAttendees(event, request)) {
         continue;
       }
-      for (TimeRange range : ranges) {
-        TimeRange before = TimeRange.fromStartEnd(range.start(), eventTime.start(), false);
-        TimeRange after = TimeRange.fromStartEnd(eventTime.end(), range.end() - 1, true);
-        if (range.contains(eventTime.start()) && range.contains(eventTime.end())) {
-          if (before.duration() >= request.getDuration()) {
-            ranges.add(before);
-          }
-          if (after.duration() >= request.getDuration()) {
-            ranges.add(after);
-          }
-          ranges.remove(range);
+      if (!hasOptionalAttendees && !hasRequiredAttendees(event, request)) {
+        continue;
+      }
+
+      for (TimeRange slot : slots) {
+        TimeRange before = TimeRange.fromStartEnd(slot.start(), eventTime.start(), false);
+        TimeRange after = TimeRange.fromStartEnd(eventTime.end(), slot.end() - 1, true);
+
+        if (slot.contains(eventTime)) {
+          removeFromMiddle(curSlots, request.getDuration(), before, after, slot);
           break;
-        } else if (range.contains(eventTime.end())) {
-          if (after.duration() >= request.getDuration()) {
-            ranges.add(after);
-          }
-          ranges.remove(range);
+        } else if (slot.contains(eventTime.end())) {
+          removeFromEnd(curSlots, request.getDuration(), after, slot);
           break;
-        } else if (range.contains(eventTime.start())) {
-          if (before.duration() >= request.getDuration()) {
-            ranges.add(before);
-          }
-          ranges.remove(range);
+        } else if (slot.contains(eventTime.start())) {
+          removeFromStart(curSlots, request.getDuration(), before, slot);
           break;
         }
       }
     }
-    return ranges;
+    return curSlots;
   }
 
   /*
-   * Return whether attendees for event overlap with attendees for request
+   * Replaces slot with two new slots, with a gap in the middle corresponding
+   * to the space that the event takes (and thus the meeting cannot take place in).
+   */
+  private void removeFromMiddle(ArrayList<TimeRange> curSlots, long reqDuration,
+    TimeRange before, TimeRange after, TimeRange slot) {
+    if (before.duration() >= reqDuration) {
+      curSlots.add(before);
+    }
+    if (after.duration() >= reqDuration) {
+      curSlots.add(after);
+    }
+    curSlots.remove(slot);
+  }
+
+  /*
+   * Removes everything in the slot before TimeRange after, corresponding to the space
+   * that the event takes (and thus the meeting cnanot take place in).
+   */
+  private void removeFromEnd(ArrayList<TimeRange> curSlots, long reqDuration,
+    TimeRange after, TimeRange slot) {
+    if (after.duration() >= reqDuration) {
+      curSlots.add(after);
+    }
+    curSlots.remove(slot);
+  }
+
+  /*
+   * Removes everything in the slot after TimeRange before, corresponding to the space
+   * that the event takes (and thus the meeting cnanot take place in).
+   */
+  private void removeFromStart(ArrayList<TimeRange> curSlots, long reqDuration,
+    TimeRange before, TimeRange slot) {
+    if (before.duration() >= reqDuration) {
+      curSlots.add(before);
+    }
+    curSlots.remove(slot);
+  }
+
+  /*
+   * Return whether attendees for event overlap with required attendees for request
    * (i.e. at least one attendee for request is an attendee for event).
    */
-  private boolean hasRequestAttendees(Event event, MeetingRequest request) {
+  private boolean hasRequiredAttendees(Event event, MeetingRequest request) {
     for (String reqAttendee : request.getAttendees()) {
       if (event.getAttendees().contains(reqAttendee)) {
           return true;
+      }
+    }
+    return false;
+  }
+
+  /*
+   * Return whether attendees for event overlap with all (required 
+   * and optional) attendees for request (i.e. at least one attendee 
+   * for request is an attendee for event).
+   */
+  private boolean hasAllAttendees(Event event, MeetingRequest request) {
+    if (hasRequiredAttendees(event, request)) {
+      return true;
+    }
+    for (String opAttendee : request.getOptionalAttendees()) {
+      if (event.getAttendees().contains(opAttendee)) {
+        return true;
       }
     }
     return false;
