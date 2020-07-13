@@ -14,10 +14,64 @@
 
 package com.google.sps;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Collection;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    throw new UnsupportedOperationException("TODO: Implement this method.");
+    ArrayList<TimeRange> ranges = new ArrayList<TimeRange>();
+    
+    if (request.getDuration() > TimeRange.WHOLE_DAY.duration()) {
+      return ranges;
+    }
+
+    ranges.add(TimeRange.WHOLE_DAY);
+    for (Event event : events) {
+      TimeRange eventTime = event.getWhen();
+      if (!hasRequestAttendees(event, request)) {
+        continue;
+      }
+      for (TimeRange range : ranges) {
+        TimeRange before = TimeRange.fromStartEnd(range.start(), eventTime.start(), false);
+        TimeRange after = TimeRange.fromStartEnd(eventTime.end(), range.end() - 1, true);
+        if (range.contains(eventTime.start()) && range.contains(eventTime.end())) {
+          if (before.duration() >= request.getDuration()) {
+            ranges.add(before);
+          }
+          if (after.duration() >= request.getDuration()) {
+            ranges.add(after);
+          }
+          ranges.remove(range);
+          break;
+        } else if (range.contains(eventTime.end())) {
+          if (after.duration() >= request.getDuration()) {
+            ranges.add(after);
+          }
+          ranges.remove(range);
+          break;
+        } else if (range.contains(eventTime.start())) {
+          if (before.duration() >= request.getDuration()) {
+            ranges.add(before);
+          }
+          ranges.remove(range);
+          break;
+        }
+      }
+    }
+    return ranges;
+  }
+
+  /*
+   * Return whether attendees for event overlap with attendees for request
+   * (i.e. at least one attendee for request is an attendee for event).
+   */
+  private boolean hasRequestAttendees(Event event, MeetingRequest request) {
+    for (String reqAttendee : request.getAttendees()) {
+      if (event.getAttendees().contains(reqAttendee)) {
+          return true;
+      }
+    }
+    return false;
   }
 }
