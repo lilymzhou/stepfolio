@@ -14,6 +14,10 @@
 
 package com.google.sps.data;
 
+/*
+ * Represents one sighting of Bigfoot, with information on the location (coordinates),
+ * date, and the witness's description of the sighting.
+ */
 public class Bigfoot {
   // Coordinates of Bigfoot sighting.
   private double lat;

@@ -13,3 +13,6 @@ target/	target/
 config.js
 
 portfolio/target
+
+walkthroughs/week-5-tdd/intro/target
+walkthroughs/week-5-tdd/project/target
