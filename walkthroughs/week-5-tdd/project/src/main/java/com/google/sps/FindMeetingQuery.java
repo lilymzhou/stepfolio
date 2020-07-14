@@ -16,11 +16,15 @@ package com.google.sps;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     ArrayList<TimeRange> slots = new ArrayList<TimeRange>();
-    
+
+    ArrayList<Event> eventsArr = sortEventsByStart(events);
+
     if (request.getDuration() > TimeRange.WHOLE_DAY.duration()) {
       return slots;
     }
@@ -28,14 +32,28 @@ public final class FindMeetingQuery {
     slots.add(TimeRange.WHOLE_DAY);
 
     if (!request.getOptionalAttendees().isEmpty()) {
-      ArrayList<TimeRange> optionalSlots = findTimeSlots(events, request, slots, true);
+      ArrayList<TimeRange> optionalSlots = findTimeSlots(eventsArr, request, slots, true);
       if (optionalSlots.isEmpty() && !request.getAttendees().isEmpty()) {
-        return findTimeSlots(events, request, slots, false);
+        return findTimeSlots(eventsArr, request, slots, false);
       }
       return optionalSlots;
     } else {
-      return findTimeSlots(events, request, slots, false);
+      return findTimeSlots(eventsArr, request, slots, false);
     }
+  }
+
+  /*
+   * Sort events by the start of their TimeRanges.
+   */
+  private ArrayList<Event> sortEventsByStart(Collection<Event> events) {
+    ArrayList<Event> eventsArr = new ArrayList<>(events);
+    Collections.sort(eventsArr, new Comparator<Event>() {
+      @Override
+      public int compare(Event a, Event b) {
+        return Long.compare(a.getWhen().start(), b.getWhen().start());
+      }
+    });
+    return eventsArr;
   }
 
   /*
