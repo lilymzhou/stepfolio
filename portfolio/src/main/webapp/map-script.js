@@ -34,9 +34,9 @@ function createMap() {
   });
 }
 
-function sanitize(unsafecontent) {
+function sanitize(unsafeContent) {
   let element = document.createElement('span');
-  element.innerText = unsafecontent;
+  element.innerText = unsafeContent;
   return element.innerHTML;
 }
 
