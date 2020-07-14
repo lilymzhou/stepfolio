@@ -37,7 +37,7 @@ function createMap() {
 function sanitize(unsafecontent) {
   let element = document.createElement('span');
   element.innerText = unsafecontent;
-  return element.innerHtml;
+  return element.innerHTML;
 }
 
 /* Animate a single bounce for marker when clicked on. */
