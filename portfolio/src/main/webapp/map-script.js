@@ -19,19 +19,25 @@ function createMap() {
         title: sighting.title,
         animation: google.maps.Animation.DROP
       });
-      const infoStr = '<div>' +
-          '<p><b>Title:</b> ' + sighting.title + '</p>' +
-          '<p><b>Date:</b> ' + sighting.date + '</p>' +
-          '<p><b>Location:</b> ' + sighting.location + '</p>' +
-          '<p><b>Description:</b> ' + sighting.description + '</p>' +
+      let info = '<div>' +
+          '<p><b>Title:</b> ' + sanitize(sighting.title) + '</p>' +
+          '<p><b>Date:</b> ' + sanitize(sighting.date) + '</p>' +
+          '<p><b>Location:</b> ' + sanitize(sighting.location) + '</p>' +
+          '<p><b>Description:</b> ' + sanitize(sighting.description) + '</p>' +
           '</div>';
-      const infoWindow = new google.maps.InfoWindow({content: infoStr});
+      const infoWindow = new google.maps.InfoWindow({content: info});
       marker.addListener('click', () => {
         infoWindow.open(map, marker);
         animateMarkerBounce(marker);
       })
     })
   });
+}
+
+function sanitize(unsafecontent) {
+  let element = document.createElement('span');
+  element.innerText = unsafecontent;
+  return element.innerHtml;
 }
 
 /* Animate a single bounce for marker when clicked on. */
