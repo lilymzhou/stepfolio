@@ -62,7 +62,8 @@ public class ChartServlet extends HttpServlet {
 
       Double riceConsump = riceStr.equals(UNDEFINED_DATA) ? 0.0 : Double.valueOf(riceStr);
 
-      String countryName = countryNameMap.containsKey(country) ? countryNameMap.get(country) : country;
+      String countryName =
+          countryNameMap.containsKey(country) ? countryNameMap.get(country) : country;
       countryMap.put(countryName, riceConsump);
     }
     scanner.close();
