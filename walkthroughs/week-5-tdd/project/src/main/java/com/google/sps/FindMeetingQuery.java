@@ -104,19 +104,14 @@ public final class FindMeetingQuery {
       slots = curSlots;
 
       /*
-       * Determine whether event's attendees (only required) 
-       * overlap with request's attendees.
+       * Finds whether there is any overlap between event's attendees and request's attendees.
+       * If there is no overlap, then this event is skipped.
        */
-      if (includeOptionalAttendees 
-        && !overlapWithRequiredAndOptionalAttendees(event, request)) {
-        continue;
-      }
-      /*
-       * Determine whether event's attendees (required and optional) 
-       * overlap with request's attendees.
-       */
-      if (!includeOptionalAttendees && !overlapWithRequiredAttendees(event, request)) {
-        continue;
+      if (hasNothingInCommon(event.getAttendees(), request.getAttendees())) {
+        if (!includeOptionalAttendees || 
+          hasNothingInCommon(event.getAttendees(), request.getOptionalAttendees())) {
+          continue;
+        }
       }
 
       for (TimeRange slot : slots) {
@@ -178,32 +173,16 @@ public final class FindMeetingQuery {
   }
 
   /*
-   * Return whether attendees for event overlap with required attendees for request
-   * (i.e. at least one attendee for request is an attendee for event).
+   * @groupA, groupB: generalized lists of strings to be compared.
+   * @return whether there is any overlap between groupA and groupB (i.e. a String
+   * appears in both groupA and groupB.
    */
-  private boolean overlapWithRequiredAttendees(Event event, MeetingRequest request) {
-    for (String reqAttendee : request.getAttendees()) {
-      if (event.getAttendees().contains(reqAttendee)) {
-          return true;
+  private boolean hasNothingInCommon(Collection<String> groupA, Collection<String> groupB) {
+    for (String b : groupB) {
+      if (groupA.contains(b)) {
+        return false;
       }
     }
-    return false;
-  }
-
-  /*
-   * Return whether attendees for event overlap with all (required 
-   * and optional) attendees for request (i.e. at least one attendee 
-   * for request is an attendee for event).
-   */
-  private boolean overlapWithRequiredAndOptionalAttendees(Event event, MeetingRequest request) {
-    if (overlapWithRequiredAttendees(event, request)) {
-      return true;
-    }
-    for (String opAttendee : request.getOptionalAttendees()) {
-      if (event.getAttendees().contains(opAttendee)) {
-        return true;
-      }
-    }
-    return false;
+    return true;
   }
 }
