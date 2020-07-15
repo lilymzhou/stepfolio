@@ -42,21 +42,18 @@ public final class FindMeetingQuery {
       return new ArrayList<TimeRange>();
     }
     
-    ArrayList<TimeRange> slots = new ArrayList<TimeRange>();
     ArrayList<Event> eventsArr = sortEventsByStart(events);
-
-    slots.add(TimeRange.WHOLE_DAY);
 
     if (!request.hasOptionalAttendees()) {
       ArrayList<TimeRange> optionalSlots = findTimeSlots(eventsArr, request, 
-        slots, /* includeOptionalAttendees = */ true);
+        /* includeOptionalAttendees = */ true);
       if (optionalSlots.isEmpty() && !request.hasAttendees()) {
         return findTimeSlots(eventsArr, request, 
-          slots, /* includeOptionalAttendees = */ false);
+          /* includeOptionalAttendees = */ false);
       }
       return optionalSlots;
     } else {
-      return findTimeSlots(eventsArr, request, slots, /* includeOptionalAttendees = */ false);
+      return findTimeSlots(eventsArr, request, /* includeOptionalAttendees = */ false);
     }
   }
 
@@ -75,25 +72,50 @@ public final class FindMeetingQuery {
   }
 
   /*
-   * Returns a list with all the available time slots when the requested meeting
-   * can take place.
+   * Finds all the possible time ranges throughout the day that the requested
+   * meeting can take place, given already-scheduled events.
+   * 
+   * @param events: List of already-scheduled events that may conflict with the times
+   * in which the request can be scheduled.
+   * @param request: Requested meeting to be scheduled into the day.
+   * @param includeOptionalAttendees: Find time ranges that work for both required
+   * and optional attendees (as opposed to only required attendees).
+   * @return List of all possible time ranges that the meeting request can take place within.
    */
   private ArrayList<TimeRange> findTimeSlots(Collection<Event> events, MeetingRequest request,
-    ArrayList<TimeRange> slots, boolean hasOptionalAttendees) {
+    boolean includeOptionalAttendees) {
+    
+    /*
+     * Slots stores the possible time ranges for the meeting request
+     * to take place. By default, this stores the entire day, and is gradually
+     * cut down into fragments if conflicts arise with events.
+     */
+    ArrayList<TimeRange> slots = new ArrayList<TimeRange>();
+    slots.add(TimeRange.WHOLE_DAY);
 
-    // A copy of slots that stores new changes to slots without interferring
-    // with the for loop below.
+    /*
+     * A copy of slots that stores new changes to slots without interferring
+     * with the for loop below.
+     */
     ArrayList<TimeRange> curSlots = new ArrayList<>(slots);
 
     for (Event event : events) {
       TimeRange eventTime = event.getWhen();
       slots = curSlots;
 
-      // Determine whether event's attendees overlaps with request's attendees.
-      if (hasOptionalAttendees && !hasAllAttendees(event, request)) {
+      /*
+       * Determine whether event's attendees (only required) 
+       * overlap with request's attendees.
+       */
+      if (includeOptionalAttendees 
+        && !overlapWithRequiredAndOptionalAttendees(event, request)) {
         continue;
       }
-      if (!hasOptionalAttendees && !hasRequiredAttendees(event, request)) {
+      /*
+       * Determine whether event's attendees (required and optional) 
+       * overlap with request's attendees.
+       */
+      if (!includeOptionalAttendees && !overlapWithRequiredAttendees(event, request)) {
         continue;
       }
 
@@ -159,7 +181,7 @@ public final class FindMeetingQuery {
    * Return whether attendees for event overlap with required attendees for request
    * (i.e. at least one attendee for request is an attendee for event).
    */
-  private boolean hasRequiredAttendees(Event event, MeetingRequest request) {
+  private boolean overlapWithRequiredAttendees(Event event, MeetingRequest request) {
     for (String reqAttendee : request.getAttendees()) {
       if (event.getAttendees().contains(reqAttendee)) {
           return true;
@@ -173,8 +195,8 @@ public final class FindMeetingQuery {
    * and optional) attendees for request (i.e. at least one attendee 
    * for request is an attendee for event).
    */
-  private boolean hasAllAttendees(Event event, MeetingRequest request) {
-    if (hasRequiredAttendees(event, request)) {
+  private boolean overlapWithRequiredAndOptionalAttendees(Event event, MeetingRequest request) {
+    if (overlapWithRequiredAttendees(event, request)) {
       return true;
     }
     for (String opAttendee : request.getOptionalAttendees()) {
