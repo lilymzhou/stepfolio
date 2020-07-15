@@ -58,6 +58,20 @@ public final class MeetingRequest {
     return Collections.unmodifiableCollection(optional_attendees);
   }
 
+  /*
+   * Returns whether attendees has at least one element.
+   */
+  public boolean hasAttendees() {
+    return attendees.isEmpty();
+  }
+
+  /*
+   * Returns whether optional_attendees has at least one element.
+   */
+  public boolean hasOptionalAttendees() {
+    return optional_attendees.isEmpty();
+  }
+
   /**
    * Adds one optional attendee for the meeting.
    */

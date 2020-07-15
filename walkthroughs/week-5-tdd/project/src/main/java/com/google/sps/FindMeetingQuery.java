@@ -20,25 +20,43 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public final class FindMeetingQuery {
+
+  /*
+   * Given previously-scheduled events, query() finds a list of all the possible time slots
+   * throughout a single day that the requested meeting can take place. If the request contains
+   * optional attendees, query() will try to find if there is at least one time slot
+   * that both required and optional attendees can attend. If a time slot cannot be found,
+   * only time slots that required attendees can attend will be returned.
+   *
+   * @param events: List of already-scheduled events that may conflict with meeting request.
+   * @param request: Meeting request (duration and a list of attendees) to be scheduled 
+   * into the day
+   * @return a list of the possible time ranges for the meeting request to take place.
+   */
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    ArrayList<TimeRange> slots = new ArrayList<TimeRange>();
-
-    ArrayList<Event> eventsArr = sortEventsByStart(events);
-
+    /*
+     * Request duration is longer than a day, which is impossible to find an appropriate
+     * time range for. Returns an empty list.
+     */
     if (request.getDuration() > TimeRange.WHOLE_DAY.duration()) {
-      return slots;
+      return new ArrayList<TimeRange>();
     }
+    
+    ArrayList<TimeRange> slots = new ArrayList<TimeRange>();
+    ArrayList<Event> eventsArr = sortEventsByStart(events);
 
     slots.add(TimeRange.WHOLE_DAY);
 
-    if (!request.getOptionalAttendees().isEmpty()) {
-      ArrayList<TimeRange> optionalSlots = findTimeSlots(eventsArr, request, slots, true);
-      if (optionalSlots.isEmpty() && !request.getAttendees().isEmpty()) {
-        return findTimeSlots(eventsArr, request, slots, false);
+    if (!request.hasOptionalAttendees()) {
+      ArrayList<TimeRange> optionalSlots = findTimeSlots(eventsArr, request, 
+        slots, /* includeOptionalAttendees = */ true);
+      if (optionalSlots.isEmpty() && !request.hasAttendees()) {
+        return findTimeSlots(eventsArr, request, 
+          slots, /* includeOptionalAttendees = */ false);
       }
       return optionalSlots;
     } else {
-      return findTimeSlots(eventsArr, request, slots, false);
+      return findTimeSlots(eventsArr, request, slots, /* includeOptionalAttendees = */ false);
     }
   }
 
