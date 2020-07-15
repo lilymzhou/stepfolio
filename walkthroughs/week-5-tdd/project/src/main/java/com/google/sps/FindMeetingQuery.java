@@ -115,17 +115,17 @@ public final class FindMeetingQuery {
       }
 
       for (TimeRange slot : slots) {
-        TimeRange before = TimeRange.fromStartEnd(slot.start(), eventTime.start(), false);
-        TimeRange after = TimeRange.fromStartEnd(eventTime.end(), slot.end() - 1, true);
-
-        if (slot.contains(eventTime)) {
-          removeFromMiddle(curSlots, request.getDuration(), before, after, slot);
+        if (slot.contains(eventTime)) { // Event is a subset of slot.
+          splitSlotAroundEvent(curSlots, request.getDuration(), slot, eventTime,
+          /* addBeginningSlot = */ true, /* addEndSlot = */ true);
           break;
-        } else if (slot.contains(eventTime.end())) {
-          removeFromEnd(curSlots, request.getDuration(), after, slot);
+        } else if (slot.contains(eventTime.end())) { // End of event is part of slot.
+          splitSlotAroundEvent(curSlots, request.getDuration(), slot, eventTime,
+          /* addBeginningSlot = */ false, /* addEndSlot = */ true);
           break;
-        } else if (slot.contains(eventTime.start())) {
-          removeFromStart(curSlots, request.getDuration(), before, slot);
+        } else if (slot.contains(eventTime.start())) { // Beginning of event is part of slot.
+          splitSlotAroundEvent(curSlots, request.getDuration(), slot, eventTime,
+          /* addBeginningSlot = */ true, /* addEndSlot = */ false);
           break;
         }
       }
@@ -134,40 +134,29 @@ public final class FindMeetingQuery {
   }
 
   /*
-   * Replaces slot with two new slots, with a gap in the middle corresponding
-   * to the space that the event takes (and thus the meeting cannot take place in).
+   * Split current time slot into 0-2 smaller time slots, given that event at least 
+   * partially overlaps slot. If event is a subset of slot, then both the remaining 
+   * beginning and end slots can potentially be added in. If event's end is part of 
+   * slot, only the difference (end of event - end of slot) can potentially be added in. 
+   * If event's beginning is part of slot, only the difference (beginning of slot - 
+   * beginning of event) can potentially be added in.
+   *
+   * @param curSlots: Current list of time ranges that the meeting request can take place within.
+   * @param reqDuration: duration (in minutes) of the requested meeting.
+   * @param slot: current member of curSlots to be sliced into smaller fragments (before and after)
+   * @param eventTime: time range that the event currently be considered takes place in.
    */
-  private void removeFromMiddle(ArrayList<TimeRange> curSlots, long reqDuration,
-    TimeRange before, TimeRange after, TimeRange slot) {
-    if (before.duration() >= reqDuration) {
+  private void splitSlotAroundEvent(ArrayList<TimeRange> curSlots, long reqDuration,
+    TimeRange slot, TimeRange eventTime, boolean addBeginningSlot, boolean addEndSlot) {
+
+    TimeRange before = TimeRange.fromStartEnd(slot.start(), eventTime.start(), false);
+    TimeRange after = TimeRange.fromStartEnd(eventTime.end(), slot.end() - 1, true);
+
+    if (addBeginningSlot && before.duration() >= reqDuration) {
       curSlots.add(before);
     }
-    if (after.duration() >= reqDuration) {
+    if (addEndSlot && after.duration() >= reqDuration) {
       curSlots.add(after);
-    }
-    curSlots.remove(slot);
-  }
-
-  /*
-   * Removes everything in the slot before TimeRange after, corresponding to the space
-   * that the event takes (and thus the meeting cnanot take place in).
-   */
-  private void removeFromEnd(ArrayList<TimeRange> curSlots, long reqDuration,
-    TimeRange after, TimeRange slot) {
-    if (after.duration() >= reqDuration) {
-      curSlots.add(after);
-    }
-    curSlots.remove(slot);
-  }
-
-  /*
-   * Removes everything in the slot after TimeRange before, corresponding to the space
-   * that the event takes (and thus the meeting cnanot take place in).
-   */
-  private void removeFromStart(ArrayList<TimeRange> curSlots, long reqDuration,
-    TimeRange before, TimeRange slot) {
-    if (before.duration() >= reqDuration) {
-      curSlots.add(before);
     }
     curSlots.remove(slot);
   }
