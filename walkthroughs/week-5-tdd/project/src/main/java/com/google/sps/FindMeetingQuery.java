@@ -123,6 +123,9 @@ public final class FindMeetingQuery {
         } else if (slot.contains(eventTime.start())) { // Beginning of event is part of slot.
           splitSlotAroundEvent(curSlots, request.getDuration(), slot, eventTime,
           /* addBeginningSlot = */ true, /* addEndSlot = */ false);
+        } else if (eventTime.contains(slot)) { // Slot is a subset of event.
+          splitSlotAroundEvent(curSlots, request.getDuration(), slot, eventTime,
+          /* addBeginningSlot = */ false, /* addEndSlot = */ false);
         }
       }
     }
