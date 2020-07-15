@@ -44,10 +44,10 @@ public final class FindMeetingQuery {
     
     ArrayList<Event> eventsArr = sortEventsByStart(events);
 
-    if (!request.hasOptionalAttendees()) {
+    if (request.hasOptionalAttendees()) {
       ArrayList<TimeRange> optionalSlots = findTimeSlots(eventsArr, request, 
         /* includeOptionalAttendees = */ true);
-      if (optionalSlots.isEmpty() && !request.hasAttendees()) {
+      if (optionalSlots.isEmpty() && request.hasAttendees()) {
         return findTimeSlots(eventsArr, request, /* includeOptionalAttendees = */ false);
       }
       return optionalSlots;

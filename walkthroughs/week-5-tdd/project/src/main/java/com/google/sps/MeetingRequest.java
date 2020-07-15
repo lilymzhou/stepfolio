@@ -59,17 +59,17 @@ public final class MeetingRequest {
   }
 
   /*
-   * Returns whether attendees has at least one element.
+   * Returns true if attendees has at least one element; false otherwise.
    */
   public boolean hasAttendees() {
-    return attendees.isEmpty();
+    return !attendees.isEmpty();
   }
 
   /*
-   * Returns whether optional_attendees has at least one element.
+   * Returns true if optional_attendees has at least one element; false otherwise.
    */
   public boolean hasOptionalAttendees() {
-    return optional_attendees.isEmpty();
+    return !optional_attendees.isEmpty();
   }
 
   /**
