@@ -120,11 +120,9 @@ public final class FindMeetingQuery {
         } else if (slot.contains(eventTime.end())) { // End of event is part of slot.
           splitSlotAroundEvent(curSlots, request.getDuration(), slot, eventTime,
           /* addBeginningSlot = */ false, /* addEndSlot = */ true);
-          break;
         } else if (slot.contains(eventTime.start())) { // Beginning of event is part of slot.
           splitSlotAroundEvent(curSlots, request.getDuration(), slot, eventTime,
           /* addBeginningSlot = */ true, /* addEndSlot = */ false);
-          break;
         }
       }
     }
