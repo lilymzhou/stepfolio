@@ -48,8 +48,7 @@ public final class FindMeetingQuery {
       ArrayList<TimeRange> optionalSlots = findTimeSlots(eventsArr, request, 
         /* includeOptionalAttendees = */ true);
       if (optionalSlots.isEmpty() && !request.hasAttendees()) {
-        return findTimeSlots(eventsArr, request, 
-          /* includeOptionalAttendees = */ false);
+        return findTimeSlots(eventsArr, request, /* includeOptionalAttendees = */ false);
       }
       return optionalSlots;
     } else {
@@ -84,7 +83,6 @@ public final class FindMeetingQuery {
    */
   private ArrayList<TimeRange> findTimeSlots(Collection<Event> events, MeetingRequest request,
     boolean includeOptionalAttendees) {
-    
     /*
      * Slots stores the possible time ranges for the meeting request
      * to take place. By default, this stores the entire day, and is gradually
@@ -141,10 +139,16 @@ public final class FindMeetingQuery {
    * If event's beginning is part of slot, only the difference (beginning of slot - 
    * beginning of event) can potentially be added in.
    *
-   * @param curSlots: Current list of time ranges that the meeting request can take place within.
+   * @param curSlots: Current list of time ranges that the meeting request can take 
+   * place within. This is modified over the course of the function.
    * @param reqDuration: duration (in minutes) of the requested meeting.
-   * @param slot: current member of curSlots to be sliced into smaller fragments (before and after)
+   * @param slot: current member of curSlots to be sliced into smaller fragments (before 
+   * and after)
    * @param eventTime: time range that the event currently be considered takes place in.
+   * @param addBeginningSlot: whether the time range (beginning of slot - beginning of
+   * event) should be considered as a valid time slot for the requested meeting.
+   * @param addEndSlot: whether the time range (end of event - end of slot) should
+   * be considered as a valid time slot for the requested meeting.
    */
   private void splitSlotAroundEvent(ArrayList<TimeRange> curSlots, long reqDuration,
     TimeRange slot, TimeRange eventTime, boolean addBeginningSlot, boolean addEndSlot) {
