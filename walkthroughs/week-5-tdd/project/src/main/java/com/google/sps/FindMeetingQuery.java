@@ -105,11 +105,10 @@ public final class FindMeetingQuery {
        * Finds whether there is any overlap between event's attendees and request's attendees.
        * If there is no overlap, then this event is skipped.
        */
-      if (hasNothingInCommon(event.getAttendees(), request.getAttendees())) {
-        if (!includeOptionalAttendees || 
-          hasNothingInCommon(event.getAttendees(), request.getOptionalAttendees())) {
-          continue;
-        }
+      if ((Collections.disjoint(event.getAttendees(), request.getAttendees())) &&
+        (!includeOptionalAttendees ||  
+        Collections.disjoint(event.getAttendees(), request.getOptionalAttendees()))){
+        continue;
       }
 
       for (TimeRange slot : slots) {
@@ -164,19 +163,5 @@ public final class FindMeetingQuery {
       curSlots.add(after);
     }
     curSlots.remove(slot);
-  }
-
-  /*
-   * @groupA, groupB: generalized lists of strings to be compared.
-   * @return whether there is any overlap between groupA and groupB (i.e. a String
-   * appears in both groupA and groupB.
-   */
-  private boolean hasNothingInCommon(Collection<String> groupA, Collection<String> groupB) {
-    for (String b : groupB) {
-      if (groupA.contains(b)) {
-        return false;
-      }
-    }
-    return true;
   }
 }
