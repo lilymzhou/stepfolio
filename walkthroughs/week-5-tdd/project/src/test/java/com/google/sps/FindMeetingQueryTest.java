@@ -360,8 +360,9 @@ public final class FindMeetingQueryTest {
 
   @Test
   public void optionalAttendeesWithGaps() {
-    // Have each person have different events. We should see three options because each person has
-    // split the restricted times.
+    // Have each person have different events, and have both A and B be added
+    // to the request as optional attendees. We should see three options because 
+    // each person has split the restricted times.
     //
     // Events  :       |--A--|     |--B--|
     // Day     : |-----------------------------|
