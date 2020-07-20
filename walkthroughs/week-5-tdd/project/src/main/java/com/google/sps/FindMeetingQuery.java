@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.ListIterator;
 
 public final class FindMeetingQuery {
 
@@ -30,8 +31,7 @@ public final class FindMeetingQuery {
    * attend. If a time slot cannot be found, only time slots that required attendees 
    * can attend will be returned.
    *
-   * @param events: List of already-scheduled events that may conflict with meeting request;
-   * should be a List<Event> object.
+   * @param events: List of already-scheduled events that may conflict with meeting request.
    * @param request: Meeting request (duration and a list of attendees) to be scheduled 
    * into the day
    * @return a list of the possible time ranges for the meeting request to take place.
@@ -44,31 +44,29 @@ public final class FindMeetingQuery {
     if (request.getDuration() > TimeRange.WHOLE_DAY.duration()) {
       return new ArrayList<>();
     }
-    
-    ArrayList<Event> sortedEvents = sortEventsByStart(events);
 
     if (request.hasOptionalAttendees()) {
-      ArrayList<TimeRange> optionalSlots = findTimeSlots(sortedEvents, request, 
+      ArrayList<TimeRange> optionalSlots = findTimeSlots(events, request, 
         /* includeOptionalAttendees = */ true);
       if (!optionalSlots.isEmpty() || !request.hasAttendees()) {
         return optionalSlots;
       }
     }
-    return findTimeSlots(sortedEvents, request, /* includeOptionalAttendees = */ false);
+    return findTimeSlots(events, request, /* includeOptionalAttendees = */ false);
   }
 
   /*
-   * Sort events by the start of their TimeRanges.
+   * Sort a list by the start of their TimeRanges.
    */
-  private ArrayList<Event> sortEventsByStart(Collection<Event> events) {
-    ArrayList<Event> eventsArr = new ArrayList<>(events);
-    Collections.sort(eventsArr, new Comparator<Event>() {
+  private ArrayList<TimeRange> sortArrByStart(Collection<TimeRange> list) {
+    ArrayList<TimeRange> newList = new ArrayList<>(list);
+    Collections.sort(newList, new Comparator<TimeRange>() {
       @Override
-      public int compare(Event a, Event b) {
-        return Long.compare(a.getWhen().start(), b.getWhen().start());
+      public int compare(TimeRange a, TimeRange b) {
+        return Long.compare(a.start(), b.start());
       }
     });
-    return eventsArr;
+    return newList;
   }
 
   /*
@@ -105,14 +103,17 @@ public final class FindMeetingQuery {
         continue;
       }
 
+      ArrayList<TimeRange> newSlots = new ArrayList<TimeRange>();
+      ArrayList<TimeRange> removeSlots = new ArrayList<TimeRange>();
       for (TimeRange slot : slots) {
         if (slot.overlaps(eventTime)) {
-          splitSlotAroundEvent(slots, request.getDuration(), slot, eventTime);
-          break;
+          splitSlotAroundEvent(newSlots, removeSlots, request.getDuration(), slot, eventTime);
         }
       }
+      slots.removeAll(removeSlots);
+      slots.addAll(newSlots);
     }
-    return slots;
+    return sortArrByStart(slots);
   }
 
   /*
@@ -121,25 +122,27 @@ public final class FindMeetingQuery {
    * of event) or (end of event - end of slot) are at least as long as {@code reqDuration}
    * they are kept in {@code curSlots} as possible meeting times.
    *
-   * @param curSlots: Current list of time ranges that the meeting request can take 
-   * place within. This is modified over the course of the function.
+   * @param newSlots: List of Time Ranges to be eventually added to slots, representing
+   * possible meeting times for the request.
+   * @param removeSlots: List of Time Ranges to be eventually removed from slots, representing
+   * time slots that the request can't be held within.
    * @param reqDuration: duration (in minutes) of the requested meeting.
    * @param slot: current member of curSlots to be sliced into smaller fragments (before 
    * and after)
    * @param eventTime: time range that the event currently be considered takes place in.
    */
-  private void splitSlotAroundEvent(ArrayList<TimeRange> curSlots, long reqDuration,
-    TimeRange slot, TimeRange eventTime) {
+  private void splitSlotAroundEvent(ArrayList<TimeRange> newSlots, 
+    ArrayList<TimeRange> removeSlots, long reqDuration, TimeRange slot, TimeRange eventTime) {
 
     TimeRange before = TimeRange.fromStartEnd(slot.start(), eventTime.start(), /* inclusive = */ false);
     TimeRange after = TimeRange.fromStartEnd(eventTime.end(), slot.end(), /* inclusive = */ false);
 
     if (before.duration() >= reqDuration) {
-      curSlots.add(before);
+      newSlots.add(before);
     }
     if (after.duration() >= reqDuration) {
-      curSlots.add(after);
+      newSlots.add(after);
     }
-    curSlots.remove(slot);
+    removeSlots.add(slot);
   }
 }

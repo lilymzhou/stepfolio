@@ -445,4 +445,30 @@ public final class FindMeetingQueryTest {
 
     Assert.assertEquals(expected, actual);
   }
+
+  @Test
+  public void oneEventSplitsTwoExistingSlots() {
+    // First event splits the available all-day slot in two, with a half hour gap, then second event starts
+    // before and ends after the gap should affect both of the two slots.
+    // 
+    //
+    // Events  :              |--A--|
+    // Events  :          |------B------|
+    // Day     : |-------------------------------|
+    // Options : |---1---|               |---2---|
+  
+    Collection<Event> events = Arrays.asList(
+        new Event("Event 1", TimeRange.fromStartDuration(TIME_0900AM, DURATION_30_MINUTES),
+            Arrays.asList(PERSON_A)),
+        new Event("Event 2", TimeRange.fromStartDuration(TIME_0800AM, DURATION_2_HOUR),
+            Arrays.asList(PERSON_B))
+    );
+    MeetingRequest request =
+        new MeetingRequest(Arrays.asList(PERSON_A, PERSON_B), DURATION_30_MINUTES);
+    Collection<TimeRange> actual = query.query(events, request);
+    TimeRange option1 = TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0800AM, false);
+    TimeRange option2 = TimeRange.fromStartEnd(TIME_1000AM, TimeRange.END_OF_DAY, true);
+    Collection<TimeRange> expected = Arrays.asList(option1, option2);
+    Assert.assertEquals(expected, actual);
+  }
 }
