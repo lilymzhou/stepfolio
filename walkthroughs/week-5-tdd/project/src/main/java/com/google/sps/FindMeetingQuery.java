@@ -119,7 +119,7 @@ public final class FindMeetingQuery {
    * Split {@code slot} into 0-2 smaller time slots, given that {@code event} at least 
    * partially overlaps slot. If the remaining fragments (beginning of slot - beginning
    * of event) or (end of event - end of slot) are at least as long as {@code reqDuration}
-   * they are kept in {@code curSlots} as possible meeting times.
+   * they are added to {@code newSlots} as possible meeting times.
    *
    * @param newSlots: List of Time Ranges to be eventually added to slots, representing
    * possible meeting times for the request.
